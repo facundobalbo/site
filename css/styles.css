@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    text-align: center;
+    font-family: 'Manrope', sans-serif;
+}
+
+/* Cuando trabajamos con font-size, los (px) son estaticos y los (%) y (em)
+   son dinamicos, pero muchos desarrolladores insisten en que la gente modifica
+   el zoom y no el tamaño de la letra, por ende dejan tamaños estaticos, el
+   zoom no modifica nada!
+   Otra cosa es que si al padre del elemento le ponemos un font size,
+   el font size del propio elemento SE POTENCIARA con el de su padre, lo que
+   puede derivar en un error de estetica si no lo notamos.
+   SE RECOMIENDA USAR SIEMPRE REM, ES EL MAS LIBRE DE ERROR.
+*/
+
+h1 {
+    font-size: 550%; /* 100% = 16 px = 1em */
+    margin-top: 0;
+    font-family: 'Dancing Script', cursive;
+}
+
+h2 {
+    font-size: 400%; /* 100% = 16 px = 1em */
+    margin-top: 0;
+    font-family: 'Dancing Script', cursive;
+}
+
+h3 {
+    font-size: 200%; /* 100% = 16 px = 1 em*/
+    text-decoration: bold;
+}
+
+p {
+    font-size: 150%; /* 100% = 16 px = 1em*/
+}
+
+
+
+
+
+
+
+.top-container {
+    background-color: #E4F9F5;
+    margin: 0;
+    position: relative;
+    padding-top: 100px
+}
+
+.bottom-cloud {
+    position: absolute;
+    left: 300px;
+    bottom: 300px;
+}
+
+.top-cloud {
+    position: absolute;
+    right: 300px;
+    top: 50px
+}
+
+.middle-container {
+    background-color: white;
+    margin-bottom: 100px;
+}
+
+.bottom-container {
+    background-color: #E4F9F5;
+}
+
+.skills {
+    background-color: #E4F9F5;
+}
+
+.profile-pic {
+    height: 250px;
+    margin: 20px 0;
+}
+
+.computer-img {
+    height: 350px;
+    border-radius: 50%;
+    margin: 20px 0;
+}
+
+.worker-img {
+    height: 250px;
+    margin: 20px 0;
+}
