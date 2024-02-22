@@ -1,2 +1,2 @@
 # millenial_site
-Una web de características típicas millenials.
+Una presentacion visualmente mas trabajada
