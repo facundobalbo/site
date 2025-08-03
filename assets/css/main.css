@@ -343,6 +343,8 @@ h6 {
 .navmenu .dropdown>.dropdown-active {
   display: block;
   background-color: rgba(33, 37, 41, 0.03);
+  border: none;
+  box-shadow: none;
 }
 
 /*--------------------------------------------------------------
