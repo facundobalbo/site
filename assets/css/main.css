@@ -2413,7 +2413,8 @@ section,
   text-align: justify;
   color: color-mix(in srgb, var(--default-color), transparent 20%);
   margin: 0 auto;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
+  margin-top: 25px;
 }
 
 .service-details .content .features .feature-box {
