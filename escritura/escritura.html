@@ -29,12 +29,6 @@
   <!-- Main CSS File -->
   <link href="../assets/css/main.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: SnapFolio
-  * Updated: Jul 21 2025 with Bootstrap v5.3.7
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body class="index-page">
@@ -46,16 +40,20 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="../index.html" class="active"><i class="bi bi-house navicon"></i>Inicio</a></li>
+          <li><a href="#about" class="active"><i class="bi bi-book navicon"></i>Biblioteca digital</a></li>
           <li><a href="../sobre-mi.html"><i class="bi bi-person navicon"></i>Sobre mi</a></li>
 
           <li class="dropdown"><a href="../index.html#services"><i class="bi bi-heart navicon"></i> <span>Mis
                 intereses</span>
               <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="../ingenieria/ingenieria.html" class=""><i class="bi bi-bricks navicon"></i>Ingeniería</a></li>
-              <li><a href="../programacion/programacion.html" class=""><i class="bi bi-display navicon"></i>Programación</a></li>
+              <li><a href="../ingenieria/ingenieria.html" class=""><i class="bi bi-bricks navicon"></i>Ingeniería</a>
+              </li>
+              <li><a href="../programacion/programacion.html" class=""><i
+                    class="bi bi-display navicon"></i>Programación</a></li>
               <li><a href="../musica/musica.html" class=""><i class="bi bi-music-note navicon"></i>Música</a></li>
-              <li><a href="../escritura/escritura.html" class="active"><i class="bi bi-feather navicon"></i>Escritura</a></li>
+              <li><a href="../escritura/escritura.html" class="active"><i
+                    class="bi bi-feather navicon"></i>Escritura</a></li>
               <li><a href="../galeria/galeria.html" class=""><i class="bi bi-grid navicon"></i>Galería</a></li>
             </ul>
           </li>
@@ -67,7 +65,7 @@
       <div class="social-links text-center">
         <a href="https://www.linkedin.com/in/facundobalbo/" class="linkedin"><i class="bi bi-linkedin"></i></a>
         <a href="https://github.com/facundobalbo" class="github"><i class="bi bi-github"></i></a>
-        <a href="https://www.instagram.com/grupo.metcon/" class="instagram"><i class="bi bi-instagram"></i></a>
+        <a href="https://www.instagram.com/facu.balbo/" class="instagram"><i class="bi bi-instagram"></i></a>
         <a href="https://www.youtube.com/@facubalbo" class="youtube"><i class="bi bi-youtube"></i></a>
         <a href="https://vsco.com/facubalbo/gallery" class="vsco"><i class="bi bi-images"></i></a>
       </div>
@@ -95,12 +93,15 @@
               <div class="hero-text">
                 <h1>Escritura <span class="accent-text"></span></h1>
                 <h2>y filosofía</h2>
-                <p class="description">Me gusta escribir como forma de entender el mundo. A veces exploro ideas filosóficas, 
-                  otras veces reflexiono sobre el tiempo, la tecnología o el sentido que le damos a las cosas. No tengo grandes 
+                <p class="description">Me gusta escribir como forma de entender el mundo. A veces exploro ideas
+                  filosóficas,
+                  otras veces reflexiono sobre el tiempo, la tecnología o el sentido que le damos a las cosas. No tengo
+                  grandes
                   respuestas, solo preguntas que me siguen desde hace años. Este es un rincón para pensar con calma.</p>
 
                 <div class="hero-actions">
                   <a href="#portfolio" class="btn btn-primary">Ver proyectos</a>
+                  <a href="#about" class="btn btn-primary">Biblioteca digital</a>
                 </div>
 
 
@@ -122,6 +123,50 @@
 
     </section><!-- /Hero Section -->
 
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row">
+
+
+          <div class="col-lg" data-aos="fade-left" data-aos-delay="300">
+            <div class="about-content">
+              <div class="section-header">
+                <span class="badge-text">Biblioteca digital</span>
+                <h2>Lectura personal</h2>
+              </div>
+
+              <div class="description">
+                <p>Antes de armar esta página, siempre juntaba mis lecturas y reflexiones en una aplicación llamada <strong>Notion</strong>. Ahí poco a poco fui aprendiendo
+                  a usar la herramienta para ordenar mis ideas y tener todo a mano.</p>
+                <p>Ahora este sitio cumple un poco ese mismo rol, pero la verdad es que Notion tiene esa comodidad de las
+                  tablas y propiedades que me encanta, así que preferí dejar mi biblioteca ahí. La dejé
+                  publicada tal cual estaba, así que si algún día te agarran ganas de leer algo y no sabés por dónde empezar (o seguir),
+                  date una vuelta, capaz algo de lo que hay ahí te llama la atención.</p>
+              </div>
+
+              <div class="cta-section">
+                <a href="https://www.notion.so/facubalbo/faf95277f35649068e19355811007836?v=ba9446a2466d429383337bf07d090320&source=copy_link" 
+                class="btn btn-primary">
+                  <i class="bi bi-arrow-right"></i>
+                  IR A MI BIBLIOTECA DIGITAL
+                </a>
+              </div>
+
+
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      </div>
+
+    </section><!-- /About Section -->
+
     <!-- Portfolio Section -->
     <section id="portfolio" class="portfolio section">
 
@@ -139,10 +184,9 @@
               <div class="filters-wrapper" data-aos="fade-right" data-aos-delay="150">
                 <ul class="portfolio-filters isotope-filters">
                   <li data-filter="*" class="filter-active">Todos</li>
-                  <li data-filter=".filter-photography">Cálculo </li>
-                  <li data-filter=".filter-design">BIM</li>
-                  <li data-filter=".filter-automotive">Hormigón</li>
-                  <li data-filter=".filter-nature">Logística</li>
+                  <li data-filter=".filter-cuento">Cuento </li>
+                  <li data-filter=".filter-reflexion">Reflexión</li>
+                  <li data-filter=".filter-guia">Guía</li>
                 </ul>
               </div>
             </div>
@@ -150,15 +194,15 @@
             <div class="col-lg-9">
               <div class="row gy-4 portfolio-container isotope-container" data-aos="fade-up" data-aos-delay="200">
 
-                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-photography">
+                <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-cuento">
                   <div class="portfolio-wrap">
-                    <img src="img/Escritos.jpg" class="img-fluid" alt="Portfolio Image" loading="lazy">
+                    <img src="img/road-trip.jpg" class="img-fluid" alt="Portfolio Image" loading="lazy">
                     <div class="portfolio-info">
                       <div class="content">
-                        <span class="category">Primer escrito</span>
-                        <h4>de letras y filosofía</h4>
+                        <span class="category">Una vida (sin sentido)</span>
+                        <h4>Cuento breve</h4>
                         <div class="portfolio-links">
-                          <a href="primer_escrito.html" title="More Details"><i class="bi bi-arrow-right"></i></a>
+                          <a href="una_vida_ss.html" title="More Details"><i class="bi bi-arrow-right"></i></a>
                         </div>
                       </div>
                     </div>
