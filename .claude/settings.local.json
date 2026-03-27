@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx next:*)",
+      "Bash(BASE=\"c:/Users/facun/Desktop/Archivos/🏗️ PROYECTOS/Web y Apps/Sitios web/Mi Pagina - Facu\")",
+      "Bash(__NEW_LINE_8d3e77e6a1a8fdbd__ rm:*)",
+      "Bash(rm -f \"$BASE/sobre-mi.html\")",
+      "Bash(rm -rf \"$BASE/assets\")",
+      "Bash(rm -rf \"$BASE/escritura\")",
+      "Bash(BASE=\"c:/Users/facun/Desktop/Archivos/🏗️ PROYECTOS/Web y Apps/Sitios web/Mi Pagina - Facu/src\")",
+      "Bash(rm -f \"$BASE/components/Nav.tsx\" \"$BASE/components/Footer.tsx\" \"$BASE/components/PanelsSection.tsx\")",
+      "Bash(mkdir -p \"$BASE/data\" \"$BASE/content/codigo\" \"$BASE/content/libro/parte-1\" \"$BASE/app/codigo\" \"$BASE/app/codigo/[slug]\" \"$BASE/app/biblioteca\" \"$BASE/app/galeria\" \"$BASE/app/musica/[slug]\")",
+      "Bash(git init:*)",
+      "Bash(node scripts/upload-to-cloudinary.mjs)",
+      "Bash(node -e \":*)",
+      "Bash(magick --version)",
+      "Bash(convert --version)",
+      "Bash(rm scripts/upload-to-cloudinary.mjs)",
+      "Bash(rmdir scripts:*)",
+      "Bash(git add:*)",
+      "Bash(git rm:*)",
+      "Bash(git restore:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

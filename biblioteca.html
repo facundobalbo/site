@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biblioteca — Facundo Balbo</title>
+  <meta name="description" content="28 libros. Filosofía, psicología, ingeniería y la novela ocasional." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="biblioteca">
+  <div id="sidebar"></div>
+
+  <div class="mobile-topbar" id="mobile-topbar"></div>
+
+  <main class="main-content" id="main-content">
+    <div class="content-wrapper">
+
+      <!-- HEADER -->
+      <header class="section-header">
+        <span class="eyebrow">REGISTRO DE LECTURAS</span>
+        <h1 class="section-title">Lo que leí.</h1>
+        <p>28 libros. Filosofía, psicología, ingeniería y la novela ocasional.</p>
+      </header>
+
+      <!-- FILTER BAR -->
+      <div class="filter-bar">
+        <button class="filter-pill active" data-filter="all">TODOS</button>
+        <button class="filter-pill" data-filter="no-ficcion">NO FICCIÓN</button>
+        <button class="filter-pill" data-filter="ficcion">FICCIÓN</button>
+      </div>
+
+      <!-- BOOKS GRID -->
+      <div class="books-grid">
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">El cuerpo humano: guía para ocupantes</div>
+          <div class="book-author">Bill Bryson</div>
+          <div class="book-rating">★★★★★</div>
+          <div class="book-review">Bryson convierte la biología en una aventura. Imprescindible.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2024</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">El poder de los hábitos</div>
+          <div class="book-author">Charles Duhigg</div>
+          <div class="book-rating">★★★★★</div>
+          <div class="book-review">El ciclo señal-rutina-recompensa es una de las ideas más útiles que encontré.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2023</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">12 reglas para vivir</div>
+          <div class="book-author">Jordan B. Peterson</div>
+          <div class="book-rating">★★★★★</div>
+          <div class="book-review">Denso, ambicioso. Ideas sobre responsabilidad y orden que resuenan con fuerza.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2023</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">La vida secreta de la mente</div>
+          <div class="book-author">Mariano Sigman</div>
+          <div class="book-rating">★★★★★</div>
+          <div class="book-review">Un neurocientífico argentino explicando cómo funciona el cerebro. Cada capítulo deja algo concreto.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2024</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">El precio de la pasión</div>
+          <div class="book-author">Gabriel Rolón</div>
+          <div class="book-rating">★★★★★</div>
+          <div class="book-review">Psicoanálisis contado como ficción. La pasión como trampa y como motor.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2022</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">Al calor del verano</div>
+          <div class="book-author">John Katzenbach</div>
+          <div class="book-rating">★★★★★</div>
+          <div class="book-review">Thriller psicológico de los buenos. Tensión sin efectismos.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2022</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">El hombre en busca de sentido</div>
+          <div class="book-author">Viktor Frankl</div>
+          <div class="book-rating">★★★★★</div>
+          <div class="book-review">Un libro que cambia la escala con la que uno mide sus propios problemas.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2023</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">Cómo ganar amigos e influir sobre las personas</div>
+          <div class="book-author">Dale Carnegie</div>
+          <div class="book-rating">★★★★★</div>
+          <div class="book-review">Más de fondo que de técnica.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2021</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">Brevísima historia del tiempo</div>
+          <div class="book-author">Stephen Hawking</div>
+          <div class="book-rating">★★★★★</div>
+          <div class="book-review">El universo en 200 páginas. Te hace sentir pequeño y asombrado.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2022</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">Las aventuras de Sherlock Holmes</div>
+          <div class="book-author">Arthur Conan Doyle</div>
+          <div class="book-rating">★★★★★</div>
+          <div class="book-review">Holmes como método. La observación como superpoder.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2021</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">El amor en los tiempos del cólera</div>
+          <div class="book-author">Gabriel García Márquez</div>
+          <div class="book-rating">★★★★★</div>
+          <div class="book-review">Una novela sobre el tiempo, la espera y la obstinación.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2023</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">Rebelión en la granja</div>
+          <div class="book-author">George Orwell</div>
+          <div class="book-rating">★★★★☆</div>
+          <div class="book-review">La fábula política perfecta. Corta, directa y devastadora.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2022</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">El Gran Gatsby</div>
+          <div class="book-author">Francis S. Fitzgerald</div>
+          <div class="book-rating">★★★★☆</div>
+          <div class="book-review">La ilusión americana con toda su belleza y su podredumbre.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2023</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">Crimen y castigo</div>
+          <div class="book-author">Fiodor Dostoyevski</div>
+          <div class="book-rating">★★★★☆</div>
+          <div class="book-review">La culpa como personaje. Absolutamente moderno en su análisis psicológico.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2024</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">Cómo piensan los ricos</div>
+          <div class="book-author">Morgan Housel</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">Buenas ideas sobre finanzas. Vale por los casos concretos.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2024</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">La sangre manda</div>
+          <div class="book-author">Stephen King</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">King siendo King. Hay momentos de genuina tensión.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2023</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">Silencio</div>
+          <div class="book-author">Thich Nhat Hanh</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">La meditación como antídoto al ruido digital. Interesante pero repetitivo.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2023</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">Tractatus Logico-Philosophicus</div>
+          <div class="book-author">Ludwig Wittgenstein</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">Ideas brillantes enterradas en proposiciones difíciles de descifrar.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2022</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">Goodbye, Things</div>
+          <div class="book-author">Fumio Sasaki</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">El minimalismo japonés contado desde adentro. Deja ganas de tirar cosas.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2023</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">El arte de la meditación</div>
+          <div class="book-author">Matthieu Ricard</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">Ricard como puente entre el budismo y la neurociencia.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2022</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">El camino del brujo</div>
+          <div class="book-author">Adolfo Bergese</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">Filosofía práctica y espiritualidad argentina.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2024</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">El vendedor más grande del mundo</div>
+          <div class="book-author">O.G. Mandino</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">La idea central vale pero se diluye en relleno motivacional.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2021</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">En las montañas de la locura</div>
+          <div class="book-author">H.P. Lovecraft</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">Horror cósmico en el Antártico. Horror ante lo incomprensible.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2023</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">Preguntas a un maestro Zen</div>
+          <div class="book-author">Taisen Deshimaru</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">Filosofía zen en formato preguntas y respuestas.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2022</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">El gato negro y otros relatos</div>
+          <div class="book-author">Edgar Allan Poe</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">La culpa y la paranoia como motores narrativos.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2021</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="no-ficcion">
+          <div class="book-title">Ágilmente</div>
+          <div class="book-author">Estanislao Bachrach</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">Neurociencia accesible. Útil como introducción.</div>
+          <div class="book-footer">
+            <span class="book-category">NO FICCIÓN</span>
+            <span class="book-year">2024</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">La metamorfosis</div>
+          <div class="book-author">Franz Kafka</div>
+          <div class="book-rating">★★★☆☆</div>
+          <div class="book-review">La alienación hecha literal. Corto e impactante.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2022</span>
+          </div>
+        </div>
+
+        <div class="book-card" data-category="ficcion">
+          <div class="book-title">El club de las 5 de la mañana</div>
+          <div class="book-author">Robin Sharma</div>
+          <div class="book-rating">★★☆☆☆</div>
+          <div class="book-review">La idea central vale pero se diluye en demasiado relleno.</div>
+          <div class="book-footer">
+            <span class="book-category">FICCIÓN</span>
+            <span class="book-year">2022</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <footer>
+      <span>© 2025 Facundo Balbo — CONSTRUIDO PARA PERDURAR</span>
+      <div>
+        <a href="https://github.com/facundobalbo" target="_blank" rel="noopener">GITHUB</a>
+        <a href="#">COLOFÓN</a>
+      </div>
+    </footer>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
