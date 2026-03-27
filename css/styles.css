@@ -2021,8 +2021,19 @@ footer a:hover {
     columns: 2;
   }
 
+  /* Fix cuantificados: en pantallas medianas el progress-box 
+     pasa abajo para evitar overlap con el título */
   .cuantificados-header {
-    padding-right: 220px;
+    padding-right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .progress-box {
+    position: static;
+    align-self: flex-start;
+    min-width: 200px;
   }
 }
 
@@ -2190,4 +2201,123 @@ footer a:hover {
 
   .lightbox-prev { left: 8px; }
   .lightbox-next { right: 8px; }
+}
+
+/* =========================================================
+   PROJECT LINKS (codigo.html)
+   ========================================================= */
+
+.project-list-links {
+  margin-top: var(--space-md);
+}
+
+.project-link {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.project-link:hover {
+  border-bottom-color: var(--accent);
+}
+
+.project-link-disabled {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+}
+
+/* =========================================================
+   ING-BANNER (ingenieria.html — pancarta por proyecto)
+   ========================================================= */
+
+.ing-banner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  margin-bottom: var(--space-lg);
+  transition: border-color 0.2s ease;
+  overflow: hidden;
+}
+
+.ing-banner:hover {
+  border-color: #2e3038;
+}
+
+.ing-banner-image {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(20%);
+  transition: filter 0.3s ease;
+}
+
+.ing-banner:hover .ing-banner-image {
+  filter: grayscale(0%);
+}
+
+.ing-banner-content {
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ing-banner-tags {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.ing-banner-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--text);
+  margin-bottom: var(--space-md);
+  line-height: 1.3;
+}
+
+.ing-banner-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: var(--space-lg);
+  flex: 1;
+}
+
+.ing-banner-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-md);
+}
+
+.ing-banner-meta span {
+  color: var(--text-dim);
+  margin-right: 4px;
+}
+
+@media (max-width: 900px) {
+  .ing-banner {
+    grid-template-columns: 1fr;
+  }
+  .ing-banner-image {
+    height: 220px;
+  }
+  .ing-banner-content {
+    padding: var(--space-lg);
+  }
 }
