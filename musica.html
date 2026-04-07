@@ -4,8 +4,100 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Música — Facundo Balbo</title>
-  <meta name="description" content="Vox Futura — Estructuras ambientales. Composiciones para la quietud entre decisiones." />
+  <meta name="description" content="Proyectos musicales — Vox Futura, Prana, NuMu y más." />
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .music-projects {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .music-project {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px;
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .music-project:last-child {
+      border-bottom: none;
+    }
+    @media (max-width: 700px) {
+      .music-project { grid-template-columns: 1fr; gap: 16px; }
+    }
+    .music-project-cover {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+    .music-project-cover-placeholder {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+    .music-project-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .music-project-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-style: italic;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .music-project-desc {
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .music-project-status {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+    }
+    .tracklist-compact {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .tracklist-compact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+    .tracklist-compact-item:last-child {
+      border-bottom: none;
+    }
+    .tracklist-compact-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      min-width: 20px;
+    }
+    .tracklist-compact-title {
+      flex: 1;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
 <body data-page="musica">
   <div id="sidebar"></div>
@@ -17,138 +109,120 @@
 
       <!-- HEADER -->
       <header class="section-header">
-        <span class="eyebrow">VOX FUTURA</span>
+        <span class="eyebrow">PROYECTOS MUSICALES</span>
         <h1 class="section-title">Estructuras ambientales.</h1>
         <p><em>Composiciones para la quietud entre decisiones.</em></p>
       </header>
 
-      <!-- FEATURED RELEASE -->
-      <section class="musica-featured">
-        <img
-          class="musica-featured-image"
-          src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/musica/Prana_1.jpg"
-          alt="Vox Futura — LP sin título"
-        />
-        <div class="musica-featured-content">
-          <span class="musica-featured-label">ÁLBUM DEBUT</span>
-          <h2 class="musica-featured-title">Vox Futura — LP sin título</h2>
-          <div class="musica-featured-status">EN PROGRESO — 2026</div>
-          <p class="musica-featured-desc">Una exploración arquitectónica del sonido ambiental. Doce composiciones que exploran la geometría emocional de los espacios industriales, la soledad nocturna y la matemática del silencio.</p>
-          <div class="musica-progress-label">FASE DE COMPOSICIÓN — GRABACIÓN</div>
-        </div>
-      </section>
+      <hr class="divider" />
 
-      <!-- PHOTO STRIP -->
-      <div class="photo-strip">
-        <img
-          src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/musica/Prana_2.jpg"
-          alt="Prana 2"
-        />
-        <img
-          src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/musica/Prana_3.png"
-          alt="Prana 3"
-        />
-        <img
-          src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/musica/banda_1.jpg"
-          alt="Banda"
-        />
-        <img
-          src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/musica/drums.jpg"
-          alt="Drums"
-        />
+      <div class="music-projects">
+
+        <!-- 1: DEJA VU -->
+        <div class="music-project">
+          <div class="music-project-cover-placeholder">PORTADA PRÓXIMAMENTE</div>
+          <div>
+            <div class="music-project-label">SINGLE / EP</div>
+            <div class="music-project-title">Deja Vu</div>
+            <p class="music-project-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Una exploración de la sensación de haber vivido algo antes — el tiempo que se pliega sobre sí mismo.</p>
+            <div class="music-project-status">PRODUCCIÓN PROPIA — VOX FUTURA</div>
+          </div>
+        </div>
+
+        <!-- 2: VADE RETRO -->
+        <div class="music-project">
+          <div class="music-project-cover-placeholder">PORTADA PRÓXIMAMENTE</div>
+          <div>
+            <div class="music-project-label">SINGLE / EP</div>
+            <div class="music-project-title">Vade Retro</div>
+            <p class="music-project-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. El exorcismo como metáfora — deshacerse de lo que ya no tiene lugar en la propia vida.</p>
+            <div class="music-project-status">PRODUCCIÓN PROPIA — VOX FUTURA</div>
+          </div>
+        </div>
+
+        <!-- 3: PRANA -->
+        <div class="music-project">
+          <img
+            class="music-project-cover"
+            src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/musica/Prana_1.jpg"
+            alt="Prana"
+          />
+          <div>
+            <div class="music-project-label">ÁLBUM / EP</div>
+            <div class="music-project-title">Prana</div>
+            <p class="music-project-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. La energía vital como concepto sonoro — texturas que respiran.</p>
+            <div class="music-project-status">PRODUCCIÓN PROPIA — VOX FUTURA</div>
+          </div>
+        </div>
+
+        <!-- 4: VOX FUTURA -->
+        <div class="music-project">
+          <img
+            class="music-project-cover"
+            src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/musica/banda_1.jpg"
+            alt="Vox Futura"
+          />
+          <div>
+            <div class="music-project-label">LP — 9 CANCIONES</div>
+            <div class="music-project-title">Vox Futura</div>
+            <p class="music-project-desc">El proyecto principal. Nueve canciones que forman un arco completo — desde la tensión hasta la quietud. Ambient, electrónica, algo de batería acústica. Disponible para escuchar.</p>
+            <div class="music-project-status">2025 — DISPONIBLE</div>
+            <div class="tracklist-compact">
+              <div class="tracklist-compact-item">
+                <span class="tracklist-compact-num">01</span>
+                <span class="tracklist-compact-title">[Sin título I]</span>
+              </div>
+              <div class="tracklist-compact-item">
+                <span class="tracklist-compact-num">02</span>
+                <span class="tracklist-compact-title">[Sin título II]</span>
+              </div>
+              <div class="tracklist-compact-item">
+                <span class="tracklist-compact-num">03</span>
+                <span class="tracklist-compact-title">[Sin título III]</span>
+              </div>
+              <div class="tracklist-compact-item">
+                <span class="tracklist-compact-num">04</span>
+                <span class="tracklist-compact-title">[Sin título IV]</span>
+              </div>
+              <div class="tracklist-compact-item">
+                <span class="tracklist-compact-num">05</span>
+                <span class="tracklist-compact-title">[Sin título V]</span>
+              </div>
+              <div class="tracklist-compact-item">
+                <span class="tracklist-compact-num">06</span>
+                <span class="tracklist-compact-title">[Sin título VI]</span>
+              </div>
+              <div class="tracklist-compact-item">
+                <span class="tracklist-compact-num">07</span>
+                <span class="tracklist-compact-title">[Sin título VII]</span>
+              </div>
+              <div class="tracklist-compact-item">
+                <span class="tracklist-compact-num">08</span>
+                <span class="tracklist-compact-title">[Sin título VIII]</span>
+              </div>
+              <div class="tracklist-compact-item">
+                <span class="tracklist-compact-num">09</span>
+                <span class="tracklist-compact-title">[Sin título IX]</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5: NUMU -->
+        <div class="music-project">
+          <div class="music-project-cover-placeholder">PORTADA PRÓXIMAMENTE</div>
+          <div>
+            <div class="music-project-label">PROYECTO COLABORATIVO</div>
+            <div class="music-project-title">NuMu</div>
+            <p class="music-project-desc">Proyecto conjunto con un amigo de San Luis. La idea es hacer rock progresivo — composiciones largas, cambios de compás, capas instrumentales. Todavía en gestación, pero con mucha energía.</p>
+            <div class="music-project-status">EN GESTACIÓN — SAN LUIS</div>
+          </div>
+        </div>
+
       </div>
 
-      <hr class="divider" />
-
-      <!-- TRACKLIST -->
-      <section>
-        <p class="eyebrow" style="margin-bottom: 24px; display: block;">TRACKLIST</p>
-        <div class="tracklist">
-          <div class="tracklist-header">
-            <span>#</span>
-            <span>TÍTULO</span>
-            <span>DURACIÓN</span>
-            <span class="track-status-header">ESTADO</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">01</span>
-            <span class="track-title">[Sin título I]</span>
-            <span class="track-duration">4:32</span>
-            <span class="track-status track-status--mixed">MEZCLADO</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">02</span>
-            <span class="track-title">[Sin título II]</span>
-            <span class="track-duration">6:17</span>
-            <span class="track-status track-status--draft">BORRADOR</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">03</span>
-            <span class="track-title">[Sin título III]</span>
-            <span class="track-duration">3:44</span>
-            <span class="track-status track-status--concept">CONCEPTO</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">04</span>
-            <span class="track-title">[Sin título IV]</span>
-            <span class="track-duration">5:08</span>
-            <span class="track-status track-status--draft">BORRADOR</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">05</span>
-            <span class="track-title">[Sin título V]</span>
-            <span class="track-duration">7:23</span>
-            <span class="track-status track-status--concept">CONCEPTO</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">06</span>
-            <span class="track-title">[Sin título VI]</span>
-            <span class="track-duration">4:55</span>
-            <span class="track-status track-status--concept">CONCEPTO</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">07</span>
-            <span class="track-title">[Sin título VII]</span>
-            <span class="track-duration">3:20</span>
-            <span class="track-status track-status--concept">CONCEPTO</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">08</span>
-            <span class="track-title">[Sin título VIII]</span>
-            <span class="track-duration">6:44</span>
-            <span class="track-status track-status--concept">CONCEPTO</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">09</span>
-            <span class="track-title">[Sin título IX]</span>
-            <span class="track-duration">5:11</span>
-            <span class="track-status track-status--concept">CONCEPTO</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">10</span>
-            <span class="track-title">[Sin título X]</span>
-            <span class="track-duration">4:38</span>
-            <span class="track-status track-status--concept">CONCEPTO</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">11</span>
-            <span class="track-title">[Sin título XI]</span>
-            <span class="track-duration">8:02</span>
-            <span class="track-status track-status--concept">CONCEPTO</span>
-          </div>
-          <div class="track-item">
-            <span class="track-number">12</span>
-            <span class="track-title">[Sin título XII]</span>
-            <span class="track-duration">5:57</span>
-            <span class="track-status track-status--concept">CONCEPTO</span>
-          </div>
-        </div>
-      </section>
-
-      <hr class="divider" />
-
       <!-- PHILOSOPHY -->
-      <div class="musica-philosophy">
+      <div class="musica-philosophy" style="margin-top: 48px;">
         <p class="musica-philosophy-text">"La composición es emoción matemática. Estas estructuras reflejan la quietud de las horas nocturnas en que son creadas."</p>
       </div>
 
@@ -156,10 +230,6 @@
 
     <footer>
       <span>© 2025 Facundo Balbo — CONSTRUIDO PARA PERDURAR</span>
-      <div>
-        <a href="https://github.com/facundobalbo" target="_blank" rel="noopener">GITHUB</a>
-        <a href="#">COLOFÓN</a>
-      </div>
     </footer>
   </main>
 

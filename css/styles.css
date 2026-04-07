@@ -235,23 +235,32 @@ input {
   border-top: 1px solid var(--border);
 }
 
-.sidebar-contact-btn {
-  display: block;
-  width: 100%;
-  text-align: center;
-  padding: 8px 12px;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  transition: background-color 0.2s ease, color 0.2s ease;
+.sidebar-socials {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
 }
 
-.sidebar-contact-btn:hover {
-  background-color: var(--accent);
-  color: var(--bg);
+.sidebar-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--text-dim);
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sidebar-social-link:hover {
+  color: var(--text);
+}
+
+.sidebar-social-link svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
 }
 
 /* MAIN CONTENT */
@@ -529,11 +538,15 @@ footer a:hover {
 
 .hero {
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 3fr 2fr;
   gap: var(--space-xl);
   align-items: center;
   padding-top: var(--space-xl);
   margin-bottom: var(--space-2xl);
+}
+
+.hero--no-photo {
+  grid-template-columns: 1fr;
 }
 
 .hero-eyebrow {
@@ -549,7 +562,7 @@ footer a:hover {
   color: var(--text-muted);
   font-size: 15px;
   margin-bottom: var(--space-md);
-  max-width: 480px;
+  max-width: 100%;
 }
 
 .hero-cta {
@@ -1859,19 +1872,20 @@ footer a:hover {
    ========================================================= */
 
 .sobre-mi-content {
-  max-width: 680px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
 }
 
 .sobre-mi-portrait {
   float: right;
-  width: 280px;
+  width: 260px;
   margin: 0 0 var(--space-xl) var(--space-xl);
 }
 
 .sobre-mi-portrait img {
   width: 100%;
-  filter: grayscale(20%);
+  border-radius: 12px;
+  filter: grayscale(10%);
 }
 
 .sobre-mi-content p {
@@ -1991,6 +2005,40 @@ footer a:hover {
   color: var(--text-dim);
 }
 
+.sobre-mi-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: var(--space-xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--border);
+}
+
+.sobre-mi-social-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.sobre-mi-social-link:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.sobre-mi-social-link svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
 .sobre-mi-footer-quote {
   text-align: center;
   padding: var(--space-xl) 0;
@@ -2037,7 +2085,7 @@ footer a:hover {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   #sidebar {
     display: none;
   }
@@ -2252,9 +2300,11 @@ footer a:hover {
 
 .ing-banner-image {
   width: 100%;
-  height: 260px;
+  height: 100%;
+  min-height: 260px;
   object-fit: cover;
   display: block;
+  align-self: stretch;
   filter: grayscale(20%);
   transition: filter 0.3s ease;
 }

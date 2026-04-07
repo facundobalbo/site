@@ -6,6 +6,116 @@
   <title>Escritura — Facundo Balbo</title>
   <meta name="description" content="Ensayos sobre permanencia. Reflexiones en la intersección de la lógica estructural y la experiencia humana." />
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .essays-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 32px;
+    }
+    @media (max-width: 900px) {
+      .essays-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .essays-grid { grid-template-columns: 1fr; }
+    }
+    .essay-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .essay-card:hover {
+      border-color: var(--accent);
+    }
+    .essay-card-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+    .essay-card-body {
+      padding: 14px 16px;
+    }
+    .essay-card-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .essay-card-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text);
+      margin-top: 6px;
+      line-height: 1.3;
+    }
+    .essay-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,11,15,0.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+    .essay-modal-overlay.open {
+      display: flex;
+    }
+    .essay-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 40px;
+    }
+    .essay-modal-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+    .essay-modal-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-style: italic;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+    .essay-modal-body p {
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+    .essay-modal-close {
+      display: block;
+      margin-top: 32px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      background: none;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .essay-modal-close:hover {
+      color: var(--text);
+      border-color: var(--text-muted);
+    }
+  </style>
 </head>
 <body data-page="escritura">
   <div id="sidebar"></div>
@@ -24,7 +134,7 @@
         </header>
         <div class="escritura-meta-card">
           <span class="escritura-meta-label">COLECCIÓN</span>
-          <div>052</div>
+          <div>009</div>
           <span class="escritura-meta-label" style="margin-top: 12px;">ÚLTIMO INGRESO</span>
           <div>2026</div>
           <span class="escritura-meta-label" style="margin-top: 12px;">ESTADO</span>
@@ -34,106 +144,191 @@
 
       <hr class="divider" />
 
-      <!-- FEATURED ESSAY -->
+      <!-- ESSAYS GRID -->
       <section>
-        <p class="eyebrow" style="margin-bottom: 24px; display: block;">ENSAYO DESTACADO</p>
-        <div class="featured-essay">
-          <img
-            class="featured-essay-image"
-            src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/Escritos.jpg"
-            alt="La integridad arquitectónica de una vida tranquila"
-          />
-          <div class="featured-essay-content">
-            <div class="featured-essay-tags">
-              <span class="badge">ENSAYO PRINCIPAL</span>
-              <span class="badge">14 MIN DE LECTURA</span>
+        <p class="eyebrow" style="margin-bottom: 8px; display: block;">ESCRITOS</p>
+        <div class="essays-grid">
+
+          <div class="essay-card" data-essay="0">
+            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/road-trip.jpg" alt="Una vida (sin sentido)" />
+            <div class="essay-card-body">
+              <div class="essay-card-label">✨ ENSAYO</div>
+              <div class="essay-card-title">Una vida (sin sentido)</div>
             </div>
-            <h2 class="featured-essay-title">La integridad arquitectónica de una vida tranquila</h2>
-            <p class="featured-essay-body">Una exploración de cómo los principios de la ingeniería estructural — tensión, compresión y equilibrio — pueden aplicarse al minimalismo digital moderno.</p>
-            <a href="#" class="featured-essay-link">LEER ENTRADA COMPLETA →</a>
           </div>
+
+          <div class="essay-card" data-essay="1">
+            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/Escritos.jpg" alt="Sobre el pensamiento y el lenguaje" />
+            <div class="essay-card-body">
+              <div class="essay-card-label">💬 ENSAYO</div>
+              <div class="essay-card-title">Sobre el pensamiento y el lenguaje</div>
+            </div>
+          </div>
+
+          <div class="essay-card" data-essay="2">
+            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/sisifo.jpg" alt="La Vida, El Tiempo y La Muerte" />
+            <div class="essay-card-body">
+              <div class="essay-card-label">🎁 ENSAYO</div>
+              <div class="essay-card-title">La Vida, El Tiempo y La Muerte</div>
+            </div>
+          </div>
+
+          <div class="essay-card" data-essay="3">
+            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/Escritos.jpg" alt="La subjetividad de la experiencia" />
+            <div class="essay-card-body">
+              <div class="essay-card-label">👤 ENSAYO</div>
+              <div class="essay-card-title">La subjetividad de la experiencia</div>
+            </div>
+          </div>
+
+          <div class="essay-card" data-essay="4">
+            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/road-trip.jpg" alt="Existencia plena" />
+            <div class="essay-card-body">
+              <div class="essay-card-label">🍀 ENSAYO</div>
+              <div class="essay-card-title">Existencia plena</div>
+            </div>
+          </div>
+
+          <div class="essay-card" data-essay="5">
+            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/sisifo.jpg" alt="El Ultimo Truco" />
+            <div class="essay-card-body">
+              <div class="essay-card-label">🎩 ENSAYO</div>
+              <div class="essay-card-title">El Ultimo Truco</div>
+            </div>
+          </div>
+
+          <div class="essay-card" data-essay="6">
+            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/Escritos.jpg" alt="El hambre del ego" />
+            <div class="essay-card-body">
+              <div class="essay-card-label">👹 ENSAYO</div>
+              <div class="essay-card-title">El hambre del ego</div>
+            </div>
+          </div>
+
+          <div class="essay-card" data-essay="7">
+            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/road-trip.jpg" alt="De donde nace Dios?" />
+            <div class="essay-card-body">
+              <div class="essay-card-label">☁️ ENSAYO</div>
+              <div class="essay-card-title">De donde nace Dios?</div>
+            </div>
+          </div>
+
+          <div class="essay-card" data-essay="8">
+            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/sisifo.jpg" alt="Auto-esclavos" />
+            <div class="essay-card-body">
+              <div class="essay-card-label">🖥️ ENSAYO</div>
+              <div class="essay-card-title">Auto-esclavos</div>
+            </div>
+          </div>
+
         </div>
       </section>
-
-      <hr class="divider" />
-
-      <!-- ESSAYS LIST -->
-      <section>
-        <p class="eyebrow" style="margin-bottom: 24px; display: block;">ARCHIVO</p>
-        <div class="essays-list">
-
-          <div class="essay-item">
-            <div class="essay-item-header">
-              <h3 class="essay-item-title">El problema de la presencia</h3>
-              <span class="essay-item-time">8 MIN</span>
-            </div>
-            <p class="essay-item-body">Vivir en el presente no es un estado que se alcanza: es una práctica que se sostiene, o se abandona, en cada instante.</p>
-          </div>
-
-          <div class="essay-item">
-            <div class="essay-item-header">
-              <h3 class="essay-item-title">La obra como método</h3>
-              <span class="essay-item-time">10 MIN</span>
-            </div>
-            <p class="essay-item-body">Hay una forma de pensar que no ocurre en el escritorio sino en la obra. Una inteligencia que nace del roce con lo real.</p>
-          </div>
-
-          <div class="essay-item">
-            <div class="essay-item-header">
-              <h3 class="essay-item-title">Sobre la obsolescencia de la utilidad</h3>
-              <span class="essay-item-time">9 MIN</span>
-            </div>
-            <p class="essay-item-body">Por qué debemos construir herramientas que prioricen el alma humana sobre la mera eficiencia funcional.</p>
-          </div>
-
-          <div class="essay-item">
-            <div class="essay-item-header">
-              <h3 class="essay-item-title">Acero, vidrio y silencio</h3>
-              <span class="essay-item-time">12 MIN</span>
-            </div>
-            <p class="essay-item-body">Un fotoensayo sobre arquitectura brutalista y el peso psicológico de la honestidad material.</p>
-          </div>
-
-          <div class="essay-item">
-            <div class="essay-item-header">
-              <h3 class="essay-item-title">El cálculo del arrepentimiento</h3>
-              <span class="essay-item-time">13 MIN</span>
-            </div>
-            <p class="essay-item-body">¿Podemos cuantificar el resultado emocional humano? Un enfoque ingenieril de la toma de decisiones bajo alta incertidumbre.</p>
-          </div>
-
-        </div>
-      </section>
-
-      <hr class="divider" />
-
-      <!-- NEWSLETTER -->
-      <div class="newsletter-block">
-        <span class="newsletter-label">EL DESPACHO</span>
-        <h2 class="newsletter-title">Mantenerse dentro de la visión del Arquitecto.</h2>
-        <p class="newsletter-body">Una selección curada de ensayos, listas de lectura y exploraciones técnicas. Sin ruido, solo señal.</p>
-        <div class="newsletter-input-row">
-          <input
-            type="email"
-            class="newsletter-input"
-            placeholder="tu@email.com"
-            aria-label="Correo electrónico"
-          />
-          <button class="newsletter-btn" type="button">UNIRSE →</button>
-        </div>
-      </div>
 
     </div>
 
     <footer>
       <span>© 2025 Facundo Balbo — CONSTRUIDO PARA PERDURAR</span>
-      <div>
-        <a href="https://github.com/facundobalbo" target="_blank" rel="noopener">GITHUB</a>
-        <a href="#">COLOFÓN</a>
-      </div>
     </footer>
   </main>
 
+  <!-- ESSAY MODAL -->
+  <div class="essay-modal-overlay" id="essay-modal-overlay">
+    <div class="essay-modal">
+      <div class="essay-modal-label" id="essay-modal-label"></div>
+      <div class="essay-modal-title" id="essay-modal-title"></div>
+      <div class="essay-modal-body" id="essay-modal-body"></div>
+      <button class="essay-modal-close" id="essay-modal-close">CERRAR ✕</button>
+    </div>
+  </div>
+
   <script src="js/main.js"></script>
+  <script>
+    const ESSAYS = [
+      {
+        icon: '✨',
+        title: 'Una vida (sin sentido)',
+        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>`
+      },
+      {
+        icon: '💬',
+        title: 'Sobre el pensamiento y el lenguaje',
+        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p><p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p><p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?</p>`
+      },
+      {
+        icon: '🎁',
+        title: 'La Vida, El Tiempo y La Muerte',
+        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p><p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p><p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>`
+      },
+      {
+        icon: '👤',
+        title: 'La subjetividad de la experiencia',
+        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est.</p><p>Omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p><p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>`
+      },
+      {
+        icon: '🍀',
+        title: 'Existencia plena',
+        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore.</p><p>Veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.</p><p>Eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>`
+      },
+      {
+        icon: '🎩',
+        title: 'El Ultimo Truco',
+        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p><p>Nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.</p><p>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.</p>`
+      },
+      {
+        icon: '👹',
+        title: 'El hambre del ego',
+        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</p><p>Id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.</p><p>Quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>`
+      },
+      {
+        icon: '☁️',
+        title: 'De donde nace Dios?',
+        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p><p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>`
+      },
+      {
+        icon: '🖥️',
+        title: 'Auto-esclavos',
+        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit.</p><p>Aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.</p><p>Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>`
+      }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = document.getElementById('essay-modal-overlay');
+      const modalTitle = document.getElementById('essay-modal-title');
+      const modalLabel = document.getElementById('essay-modal-label');
+      const modalBody = document.getElementById('essay-modal-body');
+      const closeBtn = document.getElementById('essay-modal-close');
+
+      document.querySelectorAll('.essay-card').forEach((card) => {
+        card.addEventListener('click', () => {
+          const idx = parseInt(card.dataset.essay, 10);
+          const essay = ESSAYS[idx];
+          modalLabel.textContent = essay.icon + ' ENSAYO';
+          modalTitle.textContent = essay.title;
+          modalBody.innerHTML = essay.body;
+          overlay.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      closeBtn.addEventListener('click', () => {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('open')) {
+          overlay.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
