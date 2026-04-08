@@ -153,12 +153,7 @@
         document.getElementById('essay-modal-label').textContent = escrito.estado || 'ENSAYO';
         document.getElementById('essay-modal-title').textContent = escrito.titulo;
 
-        var parrafos = (escrito.contenido || '')
-          .split('\n\n')
-          .filter(Boolean)
-          .map(function (p) { return '<p>' + p.replace(/\n/g, '<br>') + '</p>'; })
-          .join('');
-        document.getElementById('essay-modal-body').innerHTML = parrafos || '<p>Sin contenido.</p>';
+        document.getElementById('essay-modal-body').innerHTML = escrito.contenido || '<p>Sin contenido.</p>';
 
         overlay.classList.add('open');
         document.body.style.overflow = 'hidden';

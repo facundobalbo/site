@@ -55,6 +55,22 @@ async function getBlocks(pageId) {
   return data.results || [];
 }
 
+async function fetchCover(titulo, autor) {
+  try {
+    const q = encodeURIComponent((titulo + ' ' + (autor || '')).trim());
+    const res = await fetch(
+      `https://openlibrary.org/search.json?q=${q}&limit=1&fields=cover_i`,
+      { headers: { 'User-Agent': 'FacundoBalboSite/1.0' } }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const coverId = data.docs?.[0]?.cover_i;
+    return coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null;
+  } catch {
+    return null;
+  }
+}
+
 function blocksToText(blocks) {
   return blocks
     .filter((b) => b.type === 'paragraph')
@@ -97,16 +113,21 @@ module.exports = async (req, res) => {
         const tituloRaw = getTitleProp(p);
         const rating = extractRating(p);
 
+        const titulo = plainText(tituloRaw);
+        const autor = plainText(p['Autor']?.rich_text || []);
+        const portada = await fetchCover(titulo, autor);
+
         return {
           id: page.id,
-          titulo: plainText(tituloRaw),
-          autor: plainText(p['Autor']?.rich_text || []),
+          titulo,
+          autor,
           puntuacion: rating.display,
           ratingNum: rating.num,
           etiqueta: p['Etiqueta']?.select?.name || '',
-          leido: p['Leido']?.checkbox ?? false,    // ya terminado
-          actual: p['Actual']?.checkbox ?? false,   // leyendo ahora
+          leido: p['Leido']?.checkbox ?? false,
+          actual: p['Actual']?.checkbox ?? false,
           resena: blocksToText(blocks),
+          portada,
         };
       })
     );

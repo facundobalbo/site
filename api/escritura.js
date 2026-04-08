@@ -40,12 +40,25 @@ async function getBlocks(pageId) {
   return data.results || [];
 }
 
-function blocksToText(blocks) {
+function blocksToHtml(blocks) {
   return blocks
-    .filter((b) => b.type === 'paragraph')
-    .map((b) => plainText(b.paragraph?.rich_text))
+    .map((b) => {
+      if (b.type === 'paragraph') {
+        const text = plainText(b.paragraph?.rich_text);
+        return text ? `<p>${text.replace(/\n/g, '<br>')}</p>` : null;
+      }
+      if (b.type === 'image') {
+        const url = b.image?.type === 'external'
+          ? b.image.external?.url
+          : b.image?.file?.url;
+        const caption = plainText(b.image?.caption);
+        if (!url) return null;
+        return `<figure class="essay-figure"><img class="essay-content-image" src="${url}" alt="${caption || ''}" loading="lazy" />${caption ? `<figcaption class="essay-caption">${caption}</figcaption>` : ''}</figure>`;
+      }
+      return null;
+    })
     .filter(Boolean)
-    .join('\n\n');
+    .join('');
 }
 
 async function queryNotion(dbId, body) {
@@ -97,7 +110,7 @@ module.exports = async (req, res) => {
           titulo: plainText(tituloRaw),
           estado,
           cover: getCover(page),
-          contenido: blocksToText(blocks),
+          contenido: blocksToHtml(blocks),
         };
       })
     );

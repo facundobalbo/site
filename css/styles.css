@@ -1683,6 +1683,27 @@ footer a:hover {
   row-gap: 6px;
 }
 
+.book-card--has-cover {
+  grid-template-columns: 60px 1fr auto;
+  grid-template-areas:
+    "cover title  rating"
+    "cover author rating"
+    "cover review review"
+    "cover footer footer";
+  column-gap: 16px;
+}
+
+.book-cover-img {
+  grid-area: cover;
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  display: block;
+  align-self: start;
+  border-radius: 2px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+}
+
 .book-card:last-child {
   border-bottom: 1px solid var(--border);
 }
@@ -1997,6 +2018,27 @@ footer a:hover {
   color: var(--text-muted);
   margin-bottom: 16px;
   line-height: 1.7;
+}
+
+.essay-figure {
+  margin: 24px 0;
+  text-align: center;
+}
+
+.essay-content-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.essay-caption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  margin-top: 8px;
 }
 
 .essay-modal-close {

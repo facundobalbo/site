@@ -114,11 +114,16 @@
         var resena  = preview ? '<div class="book-review">' + preview + '</div>' : '';
         var hint    = libro.leido ? '<span class="book-card-hint">Ver reseña →</span>' : '';
         var clickable = libro.leido ? ' book-card--clickable' : '';
+        var hasCover = libro.portada ? ' book-card--has-cover' : '';
+        var coverHtml = libro.portada
+          ? '<img class="book-cover-img" src="' + libro.portada + '" alt="' + libro.titulo + '" loading="lazy" />'
+          : '';
 
-        return '<div class="book-card' + clickable + '"'
+        return '<div class="book-card' + clickable + hasCover + '"'
           + ' data-id="' + libro.id + '"'
           + ' data-category="' + cat + '"'
           + ' style="border-left-color:' + color + ';">'
+          + coverHtml
           + '<div class="book-title">' + libro.titulo + '</div>'
           + '<div class="book-author">' + libro.autor + '</div>'
           + '<div class="book-rating">' + (libro.puntuacion || '') + '</div>'
