@@ -1860,6 +1860,46 @@ footer a:hover {
   margin-bottom: var(--space-lg);
 }
 
+/* Paginación de apuntes en home */
+.apuntes-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border);
+}
+
+.apuntes-page-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: none;
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.apuntes-page-btn:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.apuntes-page-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.apuntes-page-info {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+
 /* Estados de carga / error */
 .biblioteca-loading,
 .biblioteca-error,

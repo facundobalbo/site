@@ -27,9 +27,20 @@
 
       <hr class="divider" />
 
-      <!-- IDENTITY CARDS -->
+      <!-- APUNTES — últimas entradas con paginación -->
       <section>
-        <p class="eyebrow" style="margin-bottom: 24px; display: block;">TRES IDENTIDADES</p>
+        <p class="eyebrow" style="margin-bottom: 24px; display: block;">APUNTES</p>
+        <div class="apuntes-list" id="home-apuntes-container">
+          <p class="apuntes-loading">Cargando...</p>
+        </div>
+        <div class="apuntes-pagination" id="home-apuntes-pagination" style="display:none;"></div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- MIS INTERESES -->
+      <section>
+        <p class="eyebrow" style="margin-bottom: 24px; display: block;">MIS INTERESES</p>
         <div class="identity-cards">
           <div class="identity-card">
             <span class="identity-card-tag">INGENIERÍA</span>
@@ -49,34 +60,6 @@
         </div>
       </section>
 
-      <hr class="divider" />
-
-      <!-- TIMELINE -->
-      <section class="timeline">
-        <p class="timeline-title">TRAYECTORIA</p>
-        <div class="timeline-item">
-          <div class="timeline-year">2014–2018</div>
-          <div>
-            <h3 class="timeline-period-title">La carrera</h3>
-            <p class="timeline-period-body">Empecé ingeniería civil en San Luis. Mientras estudiaba empecé a entender que lo que más me interesaba no era calcular vigas sino que las cosas realmente funcionen. También empecé con la batería, que duró más de lo que esperaba.</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-year">2019–2021</div>
-          <div>
-            <h3 class="timeline-period-title">La empresa</h3>
-            <p class="timeline-period-body">Co-fundé Metcon SAS con mi hermano. Empecé a dirigir obras en serio y a entender que la gestión es tan técnica como el hormigón — solo que nadie te la enseña en la facultad. Aprendí a programar para resolver mis propios problemas, no para ser programador.</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-year">2022–Presente</div>
-          <div>
-            <h3 class="timeline-period-title">Ahora</h3>
-            <p class="timeline-period-body">Dirijo la obra del Parque Industrial Norte, estoy terminando la carrera (45 de 49 materias), escribo Cuantificados cuando puedo, y produzco música de noche. No sé si es demasiado o justo lo necesario.</p>
-          </div>
-        </div>
-      </section>
-
       <!-- QUOTE BLOCK -->
       <blockquote class="quote-block">
         <p class="quote-block-text">"Hay algo satisfactorio en terminar algo que cuesta. No importa si es una losa, un capítulo o una canción."</p>
@@ -91,5 +74,76 @@
   </main>
 
   <script src="js/main.js"></script>
+  <script>
+    (function () {
+      var PER_PAGE = 10;
+      var currentPage = 0;
+      var allApuntes = [];
+
+      function renderApunte(apunte) {
+        var badge = apunte.etiqueta
+          ? '<span class="apunte-badge">' + apunte.etiqueta + '</span>'
+          : '';
+        var parrafos = (apunte.contenido || '')
+          .split('\n\n')
+          .filter(Boolean)
+          .map(function (p) { return '<p>' + p.replace(/\n/g, '<br>') + '</p>'; })
+          .join('');
+        return '<article class="apunte-item">'
+          + '<div class="apunte-meta">'
+          + '<span class="apunte-date">' + (apunte.fecha || '') + '</span>'
+          + badge
+          + '</div>'
+          + '<div class="apunte-text">' + parrafos + '</div>'
+          + '</article>';
+      }
+
+      function renderPage(page) {
+        var start = page * PER_PAGE;
+        var slice = allApuntes.slice(start, start + PER_PAGE);
+        var container = document.getElementById('home-apuntes-container');
+        container.innerHTML = slice.map(renderApunte).join('');
+
+        var totalPages = Math.ceil(allApuntes.length / PER_PAGE);
+        var pagination = document.getElementById('home-apuntes-pagination');
+
+        if (totalPages <= 1) {
+          pagination.style.display = 'none';
+          return;
+        }
+
+        pagination.style.display = 'flex';
+        pagination.innerHTML =
+          '<button class="apuntes-page-btn" id="apuntes-prev"'
+          + (page === 0 ? ' disabled' : '') + '>← ANTERIORES</button>'
+          + '<span class="apuntes-page-info">PÁGINA ' + (page + 1) + ' DE ' + totalPages + '</span>'
+          + '<button class="apuntes-page-btn" id="apuntes-next"'
+          + (page >= totalPages - 1 ? ' disabled' : '') + '>SIGUIENTES →</button>';
+
+        document.getElementById('apuntes-prev').addEventListener('click', function () {
+          if (currentPage > 0) { currentPage--; renderPage(currentPage); }
+        });
+        document.getElementById('apuntes-next').addEventListener('click', function () {
+          if (currentPage < totalPages - 1) { currentPage++; renderPage(currentPage); }
+        });
+      }
+
+      fetch('/api/apuntes')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          var container = document.getElementById('home-apuntes-container');
+          if (data.error || !data.apuntes || data.apuntes.length === 0) {
+            container.innerHTML = '<p class="apuntes-empty">Sin apuntes por el momento.</p>';
+            return;
+          }
+          allApuntes = data.apuntes;
+          renderPage(0);
+        })
+        .catch(function () {
+          document.getElementById('home-apuntes-container').innerHTML =
+            '<p class="apuntes-error">No se pudieron cargar los apuntes.</p>';
+        });
+    })();
+  </script>
 </body>
 </html>
