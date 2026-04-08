@@ -4,228 +4,240 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Música — Facundo Balbo</title>
-  <meta name="description" content="Proyectos musicales — Vox Futura, Prana, NuMu y más." />
+  <meta name="description" content="Proyectos musicales: Deja Vú, Vade Retro, Prana, Jey, Vox Futura." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪐</text></svg>" />
   <link rel="stylesheet" href="css/styles.css" />
   <style>
-    .music-projects {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    .music-project {
+    /* ---- GRID ---- */
+    .music-grid {
       display: grid;
-      grid-template-columns: 260px 1fr;
-      gap: 32px;
-      padding: 40px 0;
-      border-bottom: 1px solid var(--border);
-      align-items: start;
-    }
-    .music-project:last-child {
-      border-bottom: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 32px;
     }
     @media (max-width: 700px) {
-      .music-project { grid-template-columns: 1fr; gap: 16px; }
+      .music-grid { grid-template-columns: 1fr; }
     }
-    .music-project-cover {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
+
+    /* ---- CARD ---- */
+    .music-card {
       border: 1px solid var(--border);
-    }
-    .music-project-cover-placeholder {
-      width: 100%;
-      aspect-ratio: 1 / 1;
       background: var(--surface);
-      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .music-card--vox-futura {
+      border-color: var(--accent);
+    }
+
+    /* Header (collapsed) */
+    .music-card-header {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      cursor: pointer;
+      user-select: none;
+    }
+    .music-card-header:hover .music-card-name {
+      color: var(--accent);
+    }
+
+    .music-card-img {
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      display: block;
+      flex-shrink: 0;
+    }
+    .music-card-img-placeholder {
+      width: 72px;
+      height: 72px;
+      background: #1a1b1f;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-dim);
-      letter-spacing: 0.08em;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-style: italic;
+      color: #c8956c;
+      flex-shrink: 0;
     }
-    .music-project-label {
+    .music-card-info {
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      justify-content: center;
+    }
+    .music-card-name {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text);
+      transition: color 0.2s;
+      line-height: 1.2;
+    }
+    .music-card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 5px;
+    }
+    .music-card-period {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+    .music-card-genre {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 1px 5px;
+    }
+    .music-badge {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      padding: 2px 6px;
+    }
+    .music-badge--activo   { background: rgba(200,149,108,0.15); color: #c8956c; }
+    .music-badge--inactivo { background: rgba(85,85,85,0.18); color: #666; }
+    .music-badge--curso    { background: rgba(200,149,108,0.1); color: #c8956c; border: 1px dashed #c8956c55; }
+
+    /* Expanded body */
+    .music-card-body {
+      display: none;
+      padding: 18px 18px 20px;
+      border-top: 1px solid var(--border);
+      animation: fadeIn 0.18s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .music-card.open .music-card-body { display: block; }
+
+    /* Sections */
+    .msec { margin-bottom: 18px; }
+    .msec:last-child { margin-bottom: 0; }
+    .msec-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
       letter-spacing: 0.1em;
+      color: var(--text-dim);
       margin-bottom: 8px;
     }
-    .music-project-title {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-style: italic;
-      line-height: 1.2;
-      margin-bottom: 16px;
-    }
-    .music-project-desc {
+    .msec-text {
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.7;
-      margin-bottom: 20px;
     }
-    .music-project-status {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      color: var(--text-dim);
-      margin-bottom: 20px;
-    }
-    .tracklist-compact {
+
+    /* Members */
+    .music-members { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+    .music-member  { font-size: 13px; color: var(--text-muted); }
+    .music-member-name { color: var(--text); }
+    .music-members-note { font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: 6px; line-height: 1.5; }
+
+    /* Audio player */
+    .audio-player {
       border: 1px solid var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    .tracklist-compact-item {
+      padding: 10px 12px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 8px 14px;
+      gap: 10px;
+    }
+    .audio-btn {
+      width: 26px; height: 26px;
+      border: 1px solid var(--border);
+      background: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 10px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .audio-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .audio-track-title {
+      flex: 1;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .audio-progress {
+      width: 70px; height: 2px;
+      background: var(--border);
+      cursor: pointer; flex-shrink: 0; position: relative;
+    }
+    .audio-progress-fill { height: 100%; background: var(--accent); width: 0%; pointer-events: none; }
+    .audio-time { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); flex-shrink: 0; min-width: 30px; }
+
+    /* Playlist */
+    .music-playlist { border: 1px solid var(--border); border-top: none; }
+    .music-playlist-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 12px;
       border-bottom: 1px solid var(--border);
-      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.12s;
     }
-    .tracklist-compact-item:last-child {
-      border-bottom: none;
+    .music-playlist-item:last-child { border-bottom: none; }
+    .music-playlist-item:hover { background: rgba(255,255,255,0.02); }
+    .music-playlist-item.active .music-playlist-num,
+    .music-playlist-item.active .music-playlist-title { color: var(--accent); }
+    .music-playlist-num { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); min-width: 18px; }
+    .music-playlist-title { font-size: 12px; color: var(--text-muted); }
+
+    /* Spotify */
+    .music-spotify-sublabel { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); margin-bottom: 5px; margin-top: 10px; }
+    .music-spotify-sublabel:first-child { margin-top: 0; }
+
+    /* Press */
+    .music-press-item {
+      border: 1px solid var(--border);
+      padding: 11px 13px;
+      margin-bottom: 7px;
     }
-    .tracklist-compact-num {
+    .music-press-item:last-child { margin-bottom: 0; }
+    .music-press-source { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); letter-spacing: 0.04em; }
+    .music-press-headline { font-size: 13px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+    .music-press-date { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); margin-top: 3px; }
+    .music-press-link { font-family: var(--font-mono); font-size: 10px; color: var(--accent); text-decoration: none; display: inline-block; margin-top: 5px; }
+    .music-press-link:hover { text-decoration: underline; }
+
+    /* Links */
+    .music-links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .music-link {
       font-family: var(--font-mono);
       font-size: 10px;
-      color: var(--text-dim);
-      min-width: 20px;
-    }
-    .tracklist-compact-title {
-      flex: 1;
+      letter-spacing: 0.08em;
       color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
     }
+    .music-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    .music-note { font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: 8px; line-height: 1.6; }
   </style>
 </head>
 <body data-page="musica">
   <div id="sidebar"></div>
-
   <div class="mobile-topbar" id="mobile-topbar"></div>
 
-  <main class="main-content musica-bg" id="main-content">
+  <main class="main-content" id="main-content">
     <div class="content-wrapper">
 
-      <!-- HEADER -->
       <header class="section-header">
         <span class="eyebrow">PROYECTOS MUSICALES</span>
-        <h1 class="section-title">Estructuras ambientales.</h1>
-        <p><em>Composiciones para la quietud entre decisiones.</em></p>
+        <h1 class="section-title">La música.</h1>
+        <p>Empecé tocando la batería en una banda del secundario. Hace años que también produzco en FL Studio. Esta página reúne los proyectos en los que participé, en orden.</p>
       </header>
 
       <hr class="divider" />
 
-      <div class="music-projects">
-
-        <!-- 1: DEJA VU -->
-        <div class="music-project">
-          <div class="music-project-cover-placeholder">PORTADA PRÓXIMAMENTE</div>
-          <div>
-            <div class="music-project-label">SINGLE / EP</div>
-            <div class="music-project-title">Deja Vu</div>
-            <p class="music-project-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Una exploración de la sensación de haber vivido algo antes — el tiempo que se pliega sobre sí mismo.</p>
-            <div class="music-project-status">PRODUCCIÓN PROPIA — VOX FUTURA</div>
-          </div>
-        </div>
-
-        <!-- 2: VADE RETRO -->
-        <div class="music-project">
-          <div class="music-project-cover-placeholder">PORTADA PRÓXIMAMENTE</div>
-          <div>
-            <div class="music-project-label">SINGLE / EP</div>
-            <div class="music-project-title">Vade Retro</div>
-            <p class="music-project-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. El exorcismo como metáfora — deshacerse de lo que ya no tiene lugar en la propia vida.</p>
-            <div class="music-project-status">PRODUCCIÓN PROPIA — VOX FUTURA</div>
-          </div>
-        </div>
-
-        <!-- 3: PRANA -->
-        <div class="music-project">
-          <img
-            class="music-project-cover"
-            src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/musica/Prana_1.jpg"
-            alt="Prana"
-          />
-          <div>
-            <div class="music-project-label">ÁLBUM / EP</div>
-            <div class="music-project-title">Prana</div>
-            <p class="music-project-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. La energía vital como concepto sonoro — texturas que respiran.</p>
-            <div class="music-project-status">PRODUCCIÓN PROPIA — VOX FUTURA</div>
-          </div>
-        </div>
-
-        <!-- 4: VOX FUTURA -->
-        <div class="music-project">
-          <img
-            class="music-project-cover"
-            src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/musica/banda_1.jpg"
-            alt="Vox Futura"
-          />
-          <div>
-            <div class="music-project-label">LP — 9 CANCIONES</div>
-            <div class="music-project-title">Vox Futura</div>
-            <p class="music-project-desc">El proyecto principal. Nueve canciones que forman un arco completo — desde la tensión hasta la quietud. Ambient, electrónica, algo de batería acústica. Disponible para escuchar.</p>
-            <div class="music-project-status">2025 — DISPONIBLE</div>
-            <div class="tracklist-compact">
-              <div class="tracklist-compact-item">
-                <span class="tracklist-compact-num">01</span>
-                <span class="tracklist-compact-title">[Sin título I]</span>
-              </div>
-              <div class="tracklist-compact-item">
-                <span class="tracklist-compact-num">02</span>
-                <span class="tracklist-compact-title">[Sin título II]</span>
-              </div>
-              <div class="tracklist-compact-item">
-                <span class="tracklist-compact-num">03</span>
-                <span class="tracklist-compact-title">[Sin título III]</span>
-              </div>
-              <div class="tracklist-compact-item">
-                <span class="tracklist-compact-num">04</span>
-                <span class="tracklist-compact-title">[Sin título IV]</span>
-              </div>
-              <div class="tracklist-compact-item">
-                <span class="tracklist-compact-num">05</span>
-                <span class="tracklist-compact-title">[Sin título V]</span>
-              </div>
-              <div class="tracklist-compact-item">
-                <span class="tracklist-compact-num">06</span>
-                <span class="tracklist-compact-title">[Sin título VI]</span>
-              </div>
-              <div class="tracklist-compact-item">
-                <span class="tracklist-compact-num">07</span>
-                <span class="tracklist-compact-title">[Sin título VII]</span>
-              </div>
-              <div class="tracklist-compact-item">
-                <span class="tracklist-compact-num">08</span>
-                <span class="tracklist-compact-title">[Sin título VIII]</span>
-              </div>
-              <div class="tracklist-compact-item">
-                <span class="tracklist-compact-num">09</span>
-                <span class="tracklist-compact-title">[Sin título IX]</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 5: NUMU -->
-        <div class="music-project">
-          <div class="music-project-cover-placeholder">PORTADA PRÓXIMAMENTE</div>
-          <div>
-            <div class="music-project-label">PROYECTO COLABORATIVO</div>
-            <div class="music-project-title">NuMu</div>
-            <p class="music-project-desc">Proyecto conjunto con un amigo de San Luis. La idea es hacer rock progresivo — composiciones largas, cambios de compás, capas instrumentales. Todavía en gestación, pero con mucha energía.</p>
-            <div class="music-project-status">EN GESTACIÓN — SAN LUIS</div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- PHILOSOPHY -->
-      <div class="musica-philosophy" style="margin-top: 48px;">
-        <p class="musica-philosophy-text">"La composición es emoción matemática. Estas estructuras reflejan la quietud de las horas nocturnas en que son creadas."</p>
-      </div>
+      <div class="music-grid" id="music-grid"></div>
 
     </div>
 
@@ -235,5 +247,346 @@
   </main>
 
   <script src="js/main.js"></script>
+  <script>
+    (function () {
+      var CLOUD = 'dksm2ttkj';
+
+      function cloudUrl(id) {
+        return 'https://res.cloudinary.com/' + CLOUD + '/image/upload/' + id + '.jpg';
+      }
+      function isPlaceholder(v) {
+        return !v || v.indexOf('PLACEHOLDER') === 0;
+      }
+      function imgOrInitial(image_cloudinary, name) {
+        if (isPlaceholder(image_cloudinary)) {
+          return '<div class="music-card-img-placeholder">' + name.charAt(0) + '</div>';
+        }
+        return '<img class="music-card-img" src="' + cloudUrl(image_cloudinary) + '" alt="' + name + '" loading="lazy" />';
+      }
+
+      // ---- AUDIO ENGINE ----
+      var instances = {};
+
+      function fmt(s) {
+        var m = Math.floor(s / 60), sec = Math.floor(s % 60);
+        return m + ':' + (sec < 10 ? '0' : '') + sec;
+      }
+
+      function playerHtml(id, tracks) {
+        instances[id] = { tracks: tracks, current: 0, playing: false, audio: null };
+        var html = '<div class="audio-player" id="ap-' + id + '">'
+          + '<button class="audio-btn" id="ab-' + id + '">▶</button>'
+          + '<span class="audio-track-title" id="at-' + id + '">' + tracks[0].title + '</span>'
+          + '<div class="audio-progress" id="apr-' + id + '"><div class="audio-progress-fill" id="af-' + id + '"></div></div>'
+          + '<span class="audio-time" id="atm-' + id + '">0:00</span>'
+          + '</div>';
+        if (tracks.length > 1) {
+          html += '<div class="music-playlist" id="apl-' + id + '">';
+          tracks.forEach(function (t, i) {
+            html += '<div class="music-playlist-item' + (i === 0 ? ' active' : '') + '" data-i="' + i + '">'
+              + '<span class="music-playlist-num">' + String(i + 1).padStart(2, '0') + '</span>'
+              + '<span class="music-playlist-title">' + t.title + '</span>'
+              + '</div>';
+          });
+          html += '</div>';
+        }
+        return html;
+      }
+
+      function initPlayer(id) {
+        var inst = instances[id];
+        if (!inst || inst.audio) return;
+        inst.audio = new Audio();
+        inst.audio.src = inst.tracks[0].url;
+
+        var btn = document.getElementById('ab-' + id);
+        var titleEl = document.getElementById('at-' + id);
+        var fill = document.getElementById('af-' + id);
+        var timeEl = document.getElementById('atm-' + id);
+        var prog = document.getElementById('apr-' + id);
+        var plist = document.getElementById('apl-' + id);
+
+        function load(idx) {
+          inst.current = idx;
+          inst.audio.src = inst.tracks[idx].url;
+          titleEl.textContent = inst.tracks[idx].title;
+          fill.style.width = '0%';
+          timeEl.textContent = '0:00';
+          if (plist) plist.querySelectorAll('.music-playlist-item').forEach(function (el) {
+            el.classList.toggle('active', parseInt(el.dataset.i) === idx);
+          });
+          if (inst.playing) inst.audio.play();
+        }
+
+        btn.addEventListener('click', function () {
+          if (inst.playing) { inst.audio.pause(); btn.textContent = '▶'; inst.playing = false; }
+          else { inst.audio.play(); btn.textContent = '⏸'; inst.playing = true; }
+        });
+        inst.audio.addEventListener('timeupdate', function () {
+          if (inst.audio.duration) {
+            fill.style.width = (inst.audio.currentTime / inst.audio.duration * 100) + '%';
+            timeEl.textContent = fmt(inst.audio.currentTime);
+          }
+        });
+        inst.audio.addEventListener('ended', function () {
+          btn.textContent = '▶'; inst.playing = false;
+          if (inst.tracks.length > 1 && inst.current < inst.tracks.length - 1) {
+            inst.playing = true; load(inst.current + 1);
+          } else { fill.style.width = '0%'; timeEl.textContent = '0:00'; }
+        });
+        prog.addEventListener('click', function (e) {
+          if (!inst.audio.duration) return;
+          var r = prog.getBoundingClientRect();
+          inst.audio.currentTime = ((e.clientX - r.left) / r.width) * inst.audio.duration;
+        });
+        if (plist) plist.querySelectorAll('.music-playlist-item').forEach(function (el) {
+          el.addEventListener('click', function () { load(parseInt(el.dataset.i)); });
+        });
+      }
+
+      // ---- SPOTIFY ----
+      function spotifyEmbed(embedId) {
+        return '<iframe src="https://open.spotify.com/embed/album/' + embedId + '" '
+          + 'width="100%" height="152" frameborder="0" '
+          + 'allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" '
+          + 'loading="lazy"></iframe>';
+      }
+
+      // ---- BUILD SECTIONS ----
+      function descHtml(p) {
+        var h = '<div class="msec"><div class="msec-label">DESCRIPCIÓN</div>'
+          + '<p class="msec-text">' + p.description + '</p>';
+        if (p.my_participation) h += '<p class="msec-text" style="margin-top:6px;">' + p.my_participation + '</p>';
+        h += '</div>';
+        return h;
+      }
+
+      function membersHtml(p) {
+        var list = p.members || p.members_current;
+        if (!list || !list.length) return '';
+        var items = list.map(function (m) {
+          return '<li class="music-member"><span class="music-member-name">' + m.name + '</span> — ' + m.role + '</li>';
+        }).join('');
+        var note = p.members_note ? '<p class="music-members-note">' + p.members_note + '</p>' : '';
+        return '<div class="msec"><div class="msec-label">INTEGRANTES</div><ul class="music-members">' + items + '</ul>' + note + '</div>';
+      }
+
+      function audioHtml(p) {
+        if (p.id === 'deja-vu') {
+          var tracks = p.songs.map(function (s) { return { title: s.title, url: s.drive_url }; });
+          return '<div class="msec"><div class="msec-label">AUDIO</div>' + playerHtml('deja-vu', tracks) + '</div>';
+        }
+        if (p.id === 'vade-retro') {
+          var tracks = p.songs.map(function (s) { return { title: s.title, url: s.drive_url }; });
+          return '<div class="msec"><div class="msec-label">AUDIO</div>' + playerHtml('vade-retro', tracks) + '</div>';
+        }
+        if (p.id === 'prana') {
+          var h = '<div class="msec"><div class="msec-label">AUDIO</div>';
+          p.albums.forEach(function (a) {
+            h += '<div class="music-spotify-sublabel">' + a.title.toUpperCase() + '</div>' + spotifyEmbed(a.spotify_embed_id);
+          });
+          if (p.personal_track) {
+            h += '<div class="music-spotify-sublabel">ARCHIVO PERSONAL — ' + p.personal_track.title.toUpperCase() + '</div>';
+            h += playerHtml('prana-personal', [{ title: p.personal_track.title + ' (archivo personal)', url: p.personal_track.drive_url }]);
+          }
+          h += '</div>';
+          return h;
+        }
+        if (p.id === 'jey-solo') {
+          return '<div class="msec"><div class="msec-label">AUDIO</div>'
+            + spotifyEmbed(p.links.spotify_album_embed_id)
+            + (p.note ? '<p class="music-note">' + p.note + '</p>' : '')
+            + '</div>';
+        }
+        if (p.id === 'vox-futura') {
+          return '<div class="msec"><div class="msec-label">AUDIO</div>'
+            + '<p class="msec-text"><span class="music-badge music-badge--curso" style="display:inline-block;margin-bottom:8px;">EN CONSTRUCCIÓN</span></p>'
+            + '<p class="msec-text">Todavía sin material publicado. Hay 9 canciones listas para grabar. El EP <em>Equipaje</em> está en camino.</p>'
+            + '</div>';
+        }
+        return '';
+      }
+
+      function pressHtml(p) {
+        if (!p.press || !p.press.length) return '';
+        var items = p.press.map(function (item) {
+          var imgH = (item.image_cloudinary && !isPlaceholder(item.image_cloudinary))
+            ? '<img src="' + cloudUrl(item.image_cloudinary) + '" alt="" loading="lazy" style="width:100%;max-height:130px;object-fit:cover;display:block;margin-top:8px;" />'
+            : '';
+          var linkH = item.url
+            ? '<a class="music-press-link" href="' + item.url + '" target="_blank" rel="noopener">VER NOTA →</a>'
+            : '';
+          return '<div class="music-press-item">'
+            + '<div class="music-press-source">' + item.source + '</div>'
+            + '<div class="music-press-headline">' + item.headline + '</div>'
+            + '<div class="music-press-date">' + item.date + '</div>'
+            + linkH + imgH + '</div>';
+        }).join('');
+        return '<div class="msec"><div class="msec-label">PRENSA</div>' + items + '</div>';
+      }
+
+      function linksHtml(p) {
+        var l = p.links || {};
+        var items = [];
+        if (l.spotify_artist) items.push('<a class="music-link" href="' + l.spotify_artist + '" target="_blank" rel="noopener">SPOTIFY</a>');
+        if (l.spotify_album && !l.spotify_album_embed_id) items.push('<a class="music-link" href="' + l.spotify_album + '" target="_blank" rel="noopener">SPOTIFY</a>');
+        if (l.spotify_album && l.spotify_album_embed_id) items.push('<a class="music-link" href="' + l.spotify_album + '" target="_blank" rel="noopener">SPOTIFY</a>');
+        if (l.instagram) items.push('<a class="music-link" href="' + l.instagram + '" target="_blank" rel="noopener">INSTAGRAM</a>');
+        if (l.youtube) items.push('<a class="music-link" href="' + l.youtube + '" target="_blank" rel="noopener">YOUTUBE</a>');
+        if (!items.length) return '';
+        return '<div class="msec"><div class="msec-label">LINKS</div><div class="music-links">' + items.join('') + '</div></div>';
+      }
+
+      // ---- BUILD CARD ----
+      function buildCard(p) {
+        var isVox = p.id === 'vox-futura';
+        var badge = isVox
+          ? '<span class="music-badge music-badge--curso">EN CURSO</span>'
+          : ((p.status || '').toLowerCase().indexOf('activ') !== -1
+            ? '<span class="music-badge music-badge--activo">ACTIVO</span>'
+            : '<span class="music-badge music-badge--inactivo">INACTIVO</span>');
+
+        var genres = (p.genre || []).map(function (g) {
+          return '<span class="music-card-genre">' + g.toUpperCase() + '</span>';
+        }).join('');
+
+        var header = '<div class="music-card-header">'
+          + imgOrInitial(p.image_cloudinary, p.name)
+          + '<div class="music-card-info">'
+          + '<div class="music-card-name">' + p.name + '</div>'
+          + '<div class="music-card-meta">'
+          + '<span class="music-card-period">' + (p.period || '') + '</span>'
+          + genres + badge
+          + '</div></div></div>';
+
+        var body = descHtml(p) + membersHtml(p) + audioHtml(p) + pressHtml(p) + linksHtml(p);
+
+        return '<div class="music-card' + (isVox ? ' music-card--vox-futura' : '') + '" id="card-' + p.id + '">'
+          + header
+          + '<div class="music-card-body">' + body + '</div>'
+          + '</div>';
+      }
+
+      // ---- DATA ----
+      var projects = [
+        {
+          id: 'deja-vu', name: 'Deja Vú', period: '~2009–2014', status: 'inactiva',
+          genre: ['Rock', 'Covers'],
+          description: 'Mi primera banda. Un grupo de amigos del secundario que arrancó haciendo covers de Guns N\'Roses. De ahí salieron las primeras experiencias en escenario — la primera vez fue en el bar Komodo, en San Luis.',
+          image_cloudinary: 'PLACEHOLDER_deja_vu_foto',
+          members: [
+            { name: 'Ariel Sabatini', role: 'Voz, teclado y guitarra' },
+            { name: 'Bruno Schiavi', role: 'Voz y guitarra' },
+            { name: 'Facundo Vendramini', role: 'Bajo' },
+            { name: 'Facundo Balbo', role: 'Batería' }
+          ],
+          members_note: 'En sus comienzos la guitarra principal estaba en manos de Mauro Quiroga, que terminó dejando la banda.',
+          songs: [
+            { title: 'Todo Para Mí', drive_url: 'https://drive.google.com/uc?export=download&id=11Crj3UFAKbcqF6Af8td4ou3wbg_PARCI' },
+            { title: 'Dominó', drive_url: 'https://drive.google.com/uc?export=download&id=1au0PkSZqYLJB1YBIBmvdgS0eNEXI4Lbt' }
+          ],
+          press: [
+            { source: 'San Luis Música – Ministerio de Turismo y las Culturas', date: '15/04/2014', headline: 'Deja Vú y Beluga grabaron su demo', url: null, image_cloudinary: 'PLACEHOLDER_deja_vu_diario' }
+          ],
+          links: {}
+        },
+        {
+          id: 'vade-retro', name: 'Vade Retro', period: '2017–~2019', status: 'inactiva',
+          genre: ['Hard Rock', 'Heavy Metal'],
+          description: 'En 2017, ya estudiando en Córdoba, Fede y Joaco armaron un proyecto de rock pesado. Me sumé como baterista junto con Lauti. Duró un par de años y fue el primer acercamiento real al compromiso y la dedicación que requiere sostener una banda.',
+          image_cloudinary: 'PLACEHOLDER_vade_retro_logo',
+          members: [
+            { name: 'Federico Borgatello', role: 'Voz y guitarra rítmica' },
+            { name: 'Joaquín Miranda Bernal', role: 'Bajo y coros' },
+            { name: 'Lautaro Portillo', role: 'Guitarra principal' },
+            { name: 'Facundo Balbo', role: 'Batería' }
+          ],
+          songs: [
+            { title: 'Mente Maestra', drive_url: 'https://drive.google.com/uc?export=download&id=1ds_27Mine710FDBktZucxpWozPTgO71f' },
+            { title: 'Recuerdo Vivo', drive_url: 'https://drive.google.com/uc?export=download&id=1qD46l7zlxs2xfH1xTzS5a1ws6DMxLw8D' },
+            { title: 'Traición', drive_url: 'https://drive.google.com/uc?export=download&id=15Daqs66jWRTPeDyJcPzCAQxvNtM5khTu' },
+            { title: 'El Distinto', drive_url: 'https://drive.google.com/uc?export=download&id=1KoT_cklMGtk-oAUUl6c8YhaduJhKRj-k' },
+            { title: 'Salvación Perdida', drive_url: 'https://drive.google.com/uc?export=download&id=1xAEI4SisdhVB6__nZF2f_mABI-YI6L38' },
+            { title: 'Peligrosa Tentación', drive_url: 'https://drive.google.com/uc?export=download&id=1Yvnz6SupxGeZCgjMN73a0sHci_cXmfLu' },
+            { title: 'Renacer', drive_url: 'https://drive.google.com/uc?export=download&id=148UR5Hxl2-y2pyofhrqzX4f25QpCYKM4' },
+            { title: 'Oscuro Presente', drive_url: 'https://drive.google.com/uc?export=download&id=1rZV3Q5M6B25Gwk9OS5wYUO3oJzznlh7H' },
+            { title: 'Medley Metallica (Bonus)', drive_url: 'https://drive.google.com/uc?export=download&id=1shnM6CmxcrWOFOifs0e4orV5Njk2tbW6' }
+          ],
+          press: [
+            { source: 'Agencia de Noticias San Luis', date: '18/08/2017', headline: 'Vade Retro y su hard rock "desenconaron" los parlantes de Terrazas', url: 'https://agenciasanluis.com/2017/08/18/412215-vade-retro-y-su-hard-rock-desenconaron-los-parlantes-de-terrazas/', image_cloudinary: null }
+          ],
+          links: {}
+        },
+        {
+          id: 'prana', name: 'Prana', period: '~2019–2023', status: 'activa (sin mi participación actual)',
+          genre: ['Indie', 'Pop alternativo', 'Electrónico'],
+          description: 'El proyecto más profesional del que formé parte. Dos álbumes, uso de pistas en vivo con in-ear monitors, y una forma de trabajar que cambió cómo entiendo la música. Los que lo forman siguen siendo hermanos.',
+          image_cloudinary: 'PLACEHOLDER_prana',
+          members_current: [
+            { name: 'Santiago Bentivegna', role: 'Bajo' },
+            { name: 'Lautaro Portillo', role: 'Guitarra' },
+            { name: 'Facundo Alaniz', role: 'Voz' }
+          ],
+          my_participation: 'Participé en los dos primeros álbumes: Tantas Noches y Detrás del Sentido.',
+          albums: [
+            { title: 'Tantas Noches', spotify_embed_id: '0SEnK9rV7Pb2JJE3pnUjye' },
+            { title: 'Detrás del Sentido', spotify_embed_id: '5tPu8DGRF1EK3mu2cdAlA1' }
+          ],
+          personal_track: {
+            title: 'Tantas Noches',
+            drive_url: 'https://drive.google.com/uc?export=download&id=1QA-nZJ04PGMthWui9q4K6NrdWqArAneJ'
+          },
+          press: [],
+          links: {
+            spotify_artist: 'https://open.spotify.com/intl-es/artist/2jzv9e6iqsS0hs2w3uYeZl?si=25x9ZYohQsCeV5qL95nE1g',
+            instagram: 'https://www.instagram.com/pranamusica',
+            youtube: 'https://www.youtube.com/@pranamusicaok'
+          }
+        },
+        {
+          id: 'jey-solo', name: 'Jey', period: '2017–presente', status: 'activo (experimental)',
+          genre: ['Electrónico', 'Experimental'],
+          description: 'En 2017 empecé a explorar FL Studio como forma de seguir haciendo música sin depender de una banda. Subí algunos proyectos experimentales con el alias Jey — más para aprender que para publicar.',
+          image_cloudinary: 'PLACEHOLDER_jey',
+          note: 'YouTube lo uso para subir ideas, no versiones definitivas. Es exploración, no portfolio.',
+          press: [],
+          links: {
+            spotify_album: 'https://open.spotify.com/intl-es/album/2ee3WZcNCJK1ukf6CzS4OD?si=4qa-ptjXQSGeLOfNABtjMw',
+            spotify_album_embed_id: '2ee3WZcNCJK1ukf6CzS4OD',
+            youtube: 'https://www.youtube.com/@facubalbo'
+          }
+        },
+        {
+          id: 'vox-futura', name: 'Vox Futura', period: '2026–presente', status: 'activo',
+          genre: ['Ambient', 'Electrónica'],
+          description: 'Mi proyecto actual. Nació en 2026 y la idea es desarrollarlo junto con los hermanos de Prana. Ya hay 9 canciones listas para grabar.',
+          image_cloudinary: 'PLACEHOLDER_vox_futura',
+          press: [],
+          links: {}
+        }
+      ];
+
+      // ---- RENDER ----
+      document.getElementById('music-grid').innerHTML = projects.map(buildCard).join('');
+
+      // ---- ACCORDION + lazy init audio ----
+      projects.forEach(function (p) {
+        var card = document.getElementById('card-' + p.id);
+        var header = card.querySelector('.music-card-header');
+        var inited = false;
+
+        header.addEventListener('click', function () {
+          card.classList.toggle('open');
+          if (card.classList.contains('open') && !inited) {
+            inited = true;
+            if (p.id === 'deja-vu')   initPlayer('deja-vu');
+            if (p.id === 'vade-retro') initPlayer('vade-retro');
+            if (p.id === 'prana')      initPlayer('prana-personal');
+          }
+        });
+      });
+
+    })();
+  </script>
 </body>
 </html>
