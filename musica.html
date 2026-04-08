@@ -168,6 +168,7 @@
     }
     .audio-progress-fill { height: 100%; background: var(--accent); width: 0%; pointer-events: none; }
     .audio-time { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); flex-shrink: 0; min-width: 30px; }
+    .audio-status { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); flex-shrink: 0; min-width: 30px; }
 
     /* Playlist */
     .music-playlist { border: 1px solid var(--border); border-top: none; }
@@ -269,6 +270,15 @@
         return m + ':' + (sec < 10 ? '0' : '') + sec;
       }
 
+      // Convierte URLs de Google Drive al dominio CDN directo para evitar redirecciones
+      function normalizeAudioUrl(url) {
+        var m = url.match(/[?&]id=([^&]+)/);
+        if (m && url.indexOf('drive.google.com') !== -1) {
+          return 'https://drive.usercontent.google.com/download?id=' + m[1] + '&export=download&confirm=t';
+        }
+        return url;
+      }
+
       function playerHtml(id, tracks) {
         instances[id] = { tracks: tracks, current: 0, playing: false, audio: null };
         var html = '<div class="audio-player" id="ap-' + id + '">'
@@ -276,6 +286,7 @@
           + '<span class="audio-track-title" id="at-' + id + '">' + tracks[0].title + '</span>'
           + '<div class="audio-progress" id="apr-' + id + '"><div class="audio-progress-fill" id="af-' + id + '"></div></div>'
           + '<span class="audio-time" id="atm-' + id + '">0:00</span>'
+          + '<span class="audio-status" id="ast-' + id + '"></span>'
           + '</div>';
         if (tracks.length > 1) {
           html += '<div class="music-playlist" id="apl-' + id + '">';
@@ -294,31 +305,52 @@
         var inst = instances[id];
         if (!inst || inst.audio) return;
         inst.audio = new Audio();
-        inst.audio.src = inst.tracks[0].url;
+        inst.audio.crossOrigin = 'anonymous';
 
-        var btn = document.getElementById('ab-' + id);
+        var btn    = document.getElementById('ab-' + id);
         var titleEl = document.getElementById('at-' + id);
-        var fill = document.getElementById('af-' + id);
+        var fill   = document.getElementById('af-' + id);
         var timeEl = document.getElementById('atm-' + id);
-        var prog = document.getElementById('apr-' + id);
-        var plist = document.getElementById('apl-' + id);
+        var prog   = document.getElementById('apr-' + id);
+        var plist  = document.getElementById('apl-' + id);
+        var status = document.getElementById('ast-' + id);
+
+        function setStatus(msg) { if (status) status.textContent = msg; }
 
         function load(idx) {
           inst.current = idx;
-          inst.audio.src = inst.tracks[idx].url;
+          inst.audio.src = normalizeAudioUrl(inst.tracks[idx].url);
           titleEl.textContent = inst.tracks[idx].title;
           fill.style.width = '0%';
           timeEl.textContent = '0:00';
+          setStatus('');
           if (plist) plist.querySelectorAll('.music-playlist-item').forEach(function (el) {
             el.classList.toggle('active', parseInt(el.dataset.i) === idx);
           });
-          if (inst.playing) inst.audio.play().catch(function () { btn.textContent = '▶'; inst.playing = false; });
+          if (inst.playing) {
+            setStatus('...');
+            inst.audio.play().then(function () { setStatus(''); }).catch(function () {
+              btn.textContent = '▶'; inst.playing = false; setStatus('error');
+            });
+          }
         }
 
+        inst.audio.src = normalizeAudioUrl(inst.tracks[0].url);
+
         btn.addEventListener('click', function () {
-          if (inst.playing) { inst.audio.pause(); btn.textContent = '▶'; inst.playing = false; }
-          else { inst.audio.play().then(function () { btn.textContent = '⏸'; inst.playing = true; }).catch(function () { btn.textContent = '▶'; inst.playing = false; }); }
+          if (inst.playing) {
+            inst.audio.pause(); btn.textContent = '▶'; inst.playing = false; setStatus('');
+          } else {
+            setStatus('...');
+            inst.audio.play().then(function () {
+              btn.textContent = '⏸'; inst.playing = true; setStatus('');
+            }).catch(function () {
+              btn.textContent = '▶'; inst.playing = false; setStatus('error');
+            });
+          }
         });
+        inst.audio.addEventListener('waiting', function () { if (inst.playing) setStatus('...'); });
+        inst.audio.addEventListener('playing', function () { setStatus(''); });
         inst.audio.addEventListener('timeupdate', function () {
           if (inst.audio.duration) {
             fill.style.width = (inst.audio.currentTime / inst.audio.duration * 100) + '%';
@@ -326,10 +358,13 @@
           }
         });
         inst.audio.addEventListener('ended', function () {
-          btn.textContent = '▶'; inst.playing = false;
+          btn.textContent = '▶'; inst.playing = false; setStatus('');
           if (inst.tracks.length > 1 && inst.current < inst.tracks.length - 1) {
             inst.playing = true; load(inst.current + 1);
           } else { fill.style.width = '0%'; timeEl.textContent = '0:00'; }
+        });
+        inst.audio.addEventListener('error', function () {
+          btn.textContent = '▶'; inst.playing = false; setStatus('error');
         });
         prog.addEventListener('click', function (e) {
           if (!inst.audio.duration) return;
