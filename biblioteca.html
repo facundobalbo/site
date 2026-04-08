@@ -22,11 +22,9 @@
         <p>Filosofía, psicología, ingeniería y la novela ocasional. Va creciendo de a poco.</p>
       </header>
 
-      <!-- FILTER BAR -->
-      <div class="filter-bar">
+      <!-- FILTER BAR — generado dinámicamente desde los datos -->
+      <div class="filter-bar" id="filter-bar">
         <button class="filter-pill active" data-filter="all">TODOS</button>
-        <button class="filter-pill" data-filter="no-ficcion">NO FICCIÓN</button>
-        <button class="filter-pill" data-filter="ficcion">FICCIÓN</button>
       </div>
 
       <!-- BOOKS LIST — cargado dinámicamente desde /api/biblioteca -->
@@ -36,31 +34,85 @@
 
       <script>
         (function () {
+          // Paleta de colores para categorías (rota si hay más de las previstas)
+          var PALETTE = ['#c8956c', '#4a6a8a', '#6a8a4a', '#8a4a6a', '#4a7a7a', '#7a6a4a'];
+          var categoryColors = {};
+          var paletteIndex = 0;
+
           function slugify(str) {
             return (str || '')
               .toLowerCase()
               .normalize('NFD')
               .replace(/[\u0300-\u036f]/g, '')
-              .replace(/\s+/g, '-');
+              .replace(/[-\s]+/g, '-')
+              .trim();
+          }
+
+          function getCategoryColor(slug) {
+            if (!categoryColors[slug]) {
+              categoryColors[slug] = PALETTE[paletteIndex % PALETTE.length];
+              paletteIndex++;
+            }
+            return categoryColors[slug];
           }
 
           function renderLibro(libro) {
-            const cat = slugify(libro.etiqueta);
-            const etiquetaLabel = libro.etiqueta
-              ? `<span class="book-category">${libro.etiqueta.toUpperCase()}</span>`
+            var cat = slugify(libro.etiqueta);
+            var color = getCategoryColor(cat || 'sin-categoria');
+            var etiquetaLabel = libro.etiqueta
+              ? `<span class="book-category" style="color:${color};">${libro.etiqueta.toUpperCase()}</span>`
               : '';
-            const resena = libro.resena
-              ? `<div class="book-review">${libro.resena.replace(/\n/g, '<br>')}</div>`
+            // Reseña: solo primer párrafo, máximo 3 líneas (el clamp lo hace el CSS)
+            var primerParrafo = (libro.resena || '').split('\n\n')[0] || '';
+            var resena = primerParrafo
+              ? `<div class="book-review">${primerParrafo}</div>`
               : '';
 
             return `
-              <div class="book-card" data-category="${cat}">
+              <div class="book-card" data-category="${cat}" style="border-left-color:${color};">
                 <div class="book-title">${libro.titulo}</div>
                 <div class="book-author">${libro.autor}</div>
                 <div class="book-rating">${libro.puntuacion || ''}</div>
                 ${resena}
                 <div class="book-footer">${etiquetaLabel}</div>
               </div>`;
+          }
+
+          function buildFilters(libros) {
+            var seen = {};
+            var cats = [];
+            libros.forEach(function (l) {
+              var slug = slugify(l.etiqueta);
+              if (l.etiqueta && !seen[slug]) {
+                seen[slug] = true;
+                cats.push({ slug: slug, label: l.etiqueta.toUpperCase(), color: getCategoryColor(slug) });
+              }
+            });
+
+            var bar = document.getElementById('filter-bar');
+            cats.forEach(function (c) {
+              var btn = document.createElement('button');
+              btn.className = 'filter-pill';
+              btn.dataset.filter = c.slug;
+              btn.textContent = c.label;
+              btn.style.setProperty('--pill-color', c.color);
+              bar.appendChild(btn);
+            });
+
+            bar.querySelectorAll('.filter-pill').forEach(function (pill) {
+              pill.addEventListener('click', function () {
+                bar.querySelectorAll('.filter-pill').forEach(function (p) { p.classList.remove('active'); });
+                pill.classList.add('active');
+                var filter = pill.dataset.filter;
+                document.querySelectorAll('.book-card').forEach(function (card) {
+                  if (filter === 'all') {
+                    card.classList.remove('hidden');
+                  } else {
+                    card.classList.toggle('hidden', card.dataset.category !== filter);
+                  }
+                });
+              });
+            });
           }
 
           fetch('/api/biblioteca')
@@ -75,7 +127,10 @@
                 container.innerHTML = '<p class="biblioteca-empty">Sin libros por el momento.</p>';
                 return;
               }
+              // Asignar colores antes de render para que buildFilters y renderLibro coincidan
+              data.libros.forEach(function (l) { getCategoryColor(slugify(l.etiqueta)); });
               container.innerHTML = data.libros.map(renderLibro).join('');
+              buildFilters(data.libros);
             })
             .catch(function () {
               document.getElementById('libros-container').innerHTML =

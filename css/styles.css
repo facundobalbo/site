@@ -1703,6 +1703,10 @@ footer a:hover {
   font-style: italic;
   line-height: 1.6;
   margin-top: 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .book-footer {
@@ -1793,6 +1797,31 @@ footer a:hover {
   letter-spacing: 0.1em;
   color: var(--text-dim);
   padding: var(--space-xl) 0;
+}
+
+/* =========================================================
+   ESCRITURA — estados dinámicos
+   ========================================================= */
+
+.essay-estado {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border: 1px solid currentColor;
+}
+
+.essay-estado--finalizado {
+  color: var(--accent);
+}
+
+.essay-estado--en-progreso {
+  color: var(--text-muted);
+}
+
+.essay-card-image--fallback {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--border) 100%);
 }
 
 /* =========================================================

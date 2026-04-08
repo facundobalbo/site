@@ -144,83 +144,18 @@
 
       <hr class="divider" />
 
-      <!-- ESSAYS GRID -->
+      <!-- ESSAYS — cargado dinámicamente desde /api/escritura -->
       <section>
-        <p class="eyebrow" style="margin-bottom: 8px; display: block;">ESCRITOS</p>
-        <div class="essays-grid">
-
-          <div class="essay-card" data-essay="0">
-            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/road-trip.jpg" alt="Una vida (sin sentido)" />
-            <div class="essay-card-body">
-              <div class="essay-card-label">✨ ENSAYO</div>
-              <div class="essay-card-title">Una vida (sin sentido)</div>
-            </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 24px; flex-wrap:wrap; gap:12px;">
+          <p class="eyebrow" style="margin:0; display:block;">ESCRITOS</p>
+          <div class="filter-bar" id="essay-filter-bar" style="margin-bottom:0;">
+            <button class="filter-pill active" data-estado="all">TODOS</button>
+            <button class="filter-pill" data-estado="finalizado">FINALIZADO</button>
+            <button class="filter-pill" data-estado="en-progreso">EN PROGRESO</button>
           </div>
-
-          <div class="essay-card" data-essay="1">
-            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/Escritos.jpg" alt="Sobre el pensamiento y el lenguaje" />
-            <div class="essay-card-body">
-              <div class="essay-card-label">💬 ENSAYO</div>
-              <div class="essay-card-title">Sobre el pensamiento y el lenguaje</div>
-            </div>
-          </div>
-
-          <div class="essay-card" data-essay="2">
-            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/sisifo.jpg" alt="La Vida, El Tiempo y La Muerte" />
-            <div class="essay-card-body">
-              <div class="essay-card-label">🎁 ENSAYO</div>
-              <div class="essay-card-title">La Vida, El Tiempo y La Muerte</div>
-            </div>
-          </div>
-
-          <div class="essay-card" data-essay="3">
-            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/Escritos.jpg" alt="La subjetividad de la experiencia" />
-            <div class="essay-card-body">
-              <div class="essay-card-label">👤 ENSAYO</div>
-              <div class="essay-card-title">La subjetividad de la experiencia</div>
-            </div>
-          </div>
-
-          <div class="essay-card" data-essay="4">
-            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/road-trip.jpg" alt="Existencia plena" />
-            <div class="essay-card-body">
-              <div class="essay-card-label">🍀 ENSAYO</div>
-              <div class="essay-card-title">Existencia plena</div>
-            </div>
-          </div>
-
-          <div class="essay-card" data-essay="5">
-            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/sisifo.jpg" alt="El Ultimo Truco" />
-            <div class="essay-card-body">
-              <div class="essay-card-label">🎩 ENSAYO</div>
-              <div class="essay-card-title">El Ultimo Truco</div>
-            </div>
-          </div>
-
-          <div class="essay-card" data-essay="6">
-            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/Escritos.jpg" alt="El hambre del ego" />
-            <div class="essay-card-body">
-              <div class="essay-card-label">👹 ENSAYO</div>
-              <div class="essay-card-title">El hambre del ego</div>
-            </div>
-          </div>
-
-          <div class="essay-card" data-essay="7">
-            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/road-trip.jpg" alt="De donde nace Dios?" />
-            <div class="essay-card-body">
-              <div class="essay-card-label">☁️ ENSAYO</div>
-              <div class="essay-card-title">De donde nace Dios?</div>
-            </div>
-          </div>
-
-          <div class="essay-card" data-essay="8">
-            <img class="essay-card-image" src="https://res.cloudinary.com/dksm2ttkj/image/upload/facundobalbo/escritura/sisifo.jpg" alt="Auto-esclavos" />
-            <div class="essay-card-body">
-              <div class="essay-card-label">🖥️ ENSAYO</div>
-              <div class="essay-card-title">Auto-esclavos</div>
-            </div>
-          </div>
-
+        </div>
+        <div class="essays-grid" id="essays-container">
+          <p class="biblioteca-loading">Cargando...</p>
         </div>
       </section>
 
@@ -243,92 +178,116 @@
 
   <script src="js/main.js"></script>
   <script>
-    const ESSAYS = [
-      {
-        icon: '✨',
-        title: 'Una vida (sin sentido)',
-        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>`
-      },
-      {
-        icon: '💬',
-        title: 'Sobre el pensamiento y el lenguaje',
-        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p><p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p><p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?</p>`
-      },
-      {
-        icon: '🎁',
-        title: 'La Vida, El Tiempo y La Muerte',
-        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p><p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p><p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>`
-      },
-      {
-        icon: '👤',
-        title: 'La subjetividad de la experiencia',
-        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est.</p><p>Omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p><p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>`
-      },
-      {
-        icon: '🍀',
-        title: 'Existencia plena',
-        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore.</p><p>Veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.</p><p>Eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>`
-      },
-      {
-        icon: '🎩',
-        title: 'El Ultimo Truco',
-        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p><p>Nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.</p><p>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.</p>`
-      },
-      {
-        icon: '👹',
-        title: 'El hambre del ego',
-        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</p><p>Id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.</p><p>Quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>`
-      },
-      {
-        icon: '☁️',
-        title: 'De donde nace Dios?',
-        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p><p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>`
-      },
-      {
-        icon: '🖥️',
-        title: 'Auto-esclavos',
-        body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit.</p><p>Aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.</p><p>Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>`
+    (function () {
+      var allEscritos = [];
+
+      function slugEstado(estado) {
+        return (estado || '').toLowerCase().replace(/\s+/g, '-');
       }
-    ];
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const overlay = document.getElementById('essay-modal-overlay');
-      const modalTitle = document.getElementById('essay-modal-title');
-      const modalLabel = document.getElementById('essay-modal-label');
-      const modalBody = document.getElementById('essay-modal-body');
-      const closeBtn = document.getElementById('essay-modal-close');
+      function renderEscrito(escrito, index) {
+        var estadoSlug = slugEstado(escrito.estado);
+        var estadoLabel = escrito.estado
+          ? `<span class="essay-estado essay-estado--${estadoSlug}">${escrito.estado.toUpperCase()}</span>`
+          : '';
 
-      document.querySelectorAll('.essay-card').forEach((card) => {
-        card.addEventListener('click', () => {
-          const idx = parseInt(card.dataset.essay, 10);
-          const essay = ESSAYS[idx];
-          modalLabel.textContent = essay.icon + ' ENSAYO';
-          modalTitle.textContent = essay.title;
-          modalBody.innerHTML = essay.body;
-          overlay.classList.add('open');
-          document.body.style.overflow = 'hidden';
-        });
-      });
+        var coverHtml = escrito.cover
+          ? `<img class="essay-card-image" src="${escrito.cover}" alt="${escrito.titulo}" loading="lazy" />`
+          : `<div class="essay-card-image essay-card-image--fallback" aria-hidden="true"></div>`;
 
-      closeBtn.addEventListener('click', () => {
-        overlay.classList.remove('open');
+        return `
+          <div class="essay-card" data-estado="${estadoSlug}" data-idx="${index}">
+            ${coverHtml}
+            <div class="essay-card-body">
+              <div class="essay-card-label">${estadoLabel}</div>
+              <div class="essay-card-title">${escrito.titulo}</div>
+            </div>
+          </div>`;
+      }
+
+      function openModal(escrito) {
+        var overlay = document.getElementById('essay-modal-overlay');
+        document.getElementById('essay-modal-label').textContent = escrito.estado || 'ENSAYO';
+        document.getElementById('essay-modal-title').textContent = escrito.titulo;
+
+        var parrafos = (escrito.contenido || '')
+          .split('\n\n')
+          .filter(Boolean)
+          .map(function (p) { return '<p>' + p.replace(/\n/g, '<br>') + '</p>'; })
+          .join('');
+        document.getElementById('essay-modal-body').innerHTML = parrafos || '<p>Sin contenido.</p>';
+
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        document.getElementById('essay-modal-overlay').classList.remove('open');
         document.body.style.overflow = '';
-      });
+      }
 
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-          overlay.classList.remove('open');
-          document.body.style.overflow = '';
-        }
-      });
+      function attachCardListeners() {
+        document.querySelectorAll('.essay-card').forEach(function (card) {
+          card.addEventListener('click', function () {
+            var idx = parseInt(card.dataset.idx, 10);
+            openModal(allEscritos[idx]);
+          });
+        });
+      }
 
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && overlay.classList.contains('open')) {
-          overlay.classList.remove('open');
-          document.body.style.overflow = '';
-        }
+      function initFilter() {
+        document.querySelectorAll('#essay-filter-bar .filter-pill').forEach(function (pill) {
+          pill.addEventListener('click', function () {
+            document.querySelectorAll('#essay-filter-bar .filter-pill').forEach(function (p) {
+              p.classList.remove('active');
+            });
+            pill.classList.add('active');
+            var estado = pill.dataset.estado;
+            document.querySelectorAll('.essay-card').forEach(function (card) {
+              if (estado === 'all') {
+                card.classList.remove('hidden');
+              } else {
+                card.classList.toggle('hidden', card.dataset.estado !== estado);
+              }
+            });
+          });
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var overlay = document.getElementById('essay-modal-overlay');
+        document.getElementById('essay-modal-close').addEventListener('click', closeModal);
+        overlay.addEventListener('click', function (e) {
+          if (e.target === overlay) closeModal();
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+        });
+
+        initFilter();
+
+        fetch('/api/escritura')
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            var container = document.getElementById('essays-container');
+            if (data.error || !data.escritos) {
+              container.innerHTML = '<p class="biblioteca-error">No se pudieron cargar los escritos.</p>';
+              return;
+            }
+            if (data.escritos.length === 0) {
+              container.innerHTML = '<p class="biblioteca-empty">Sin escritos por el momento.</p>';
+              return;
+            }
+            allEscritos = data.escritos;
+            container.innerHTML = allEscritos.map(renderEscrito).join('');
+            attachCardListeners();
+          })
+          .catch(function () {
+            document.getElementById('essays-container').innerHTML =
+              '<p class="biblioteca-error">No se pudieron cargar los escritos.</p>';
+          });
       });
-    });
+    })();
   </script>
 </body>
 </html>
