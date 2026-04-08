@@ -149,8 +149,8 @@
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 24px; flex-wrap:wrap; gap:12px;">
           <p class="eyebrow" style="margin:0; display:block;">ESCRITOS</p>
           <div class="filter-bar" id="essay-filter-bar" style="margin-bottom:0;">
-            <button class="filter-pill active" data-estado="all">TODOS</button>
-            <button class="filter-pill" data-estado="finalizado">FINALIZADO</button>
+            <button class="filter-pill" data-estado="all">TODOS</button>
+            <button class="filter-pill active" data-estado="finalizado">FINALIZADO</button>
             <button class="filter-pill" data-estado="en-progreso">EN PROGRESO</button>
           </div>
         </div>
@@ -281,6 +281,10 @@
             allEscritos = data.escritos;
             container.innerHTML = allEscritos.map(renderEscrito).join('');
             attachCardListeners();
+            // Aplicar filtro inicial: mostrar solo finalizados
+            document.querySelectorAll('.essay-card').forEach(function (card) {
+              card.classList.toggle('hidden', card.dataset.estado !== 'finalizado');
+            });
           })
           .catch(function () {
             document.getElementById('essays-container').innerHTML =

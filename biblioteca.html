@@ -148,17 +148,17 @@
         });
       }
 
-      document.addEventListener('DOMContentLoaded', function () {
-        var overlay = document.getElementById('book-modal-overlay');
-        document.getElementById('book-modal-close').addEventListener('click', closeBookModal);
-        overlay.addEventListener('click', function (e) {
-          if (e.target === overlay) closeBookModal();
-        });
-        document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape' && overlay.classList.contains('open')) closeBookModal();
-        });
+      // El script está al final del body — el DOM ya está listo, no se necesita DOMContentLoaded
+      var overlay = document.getElementById('book-modal-overlay');
+      document.getElementById('book-modal-close').addEventListener('click', closeBookModal);
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeBookModal();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.classList.contains('open')) closeBookModal();
+      });
 
-        fetch('/api/biblioteca')
+      fetch('/api/biblioteca')
           .then(function (r) { return r.json(); })
           .then(function (data) {
             var container = document.getElementById('libros-container');
@@ -187,7 +187,6 @@
             document.getElementById('libros-container').innerHTML =
               '<p class="biblioteca-error">No se pudo cargar la biblioteca.</p>';
           });
-      });
     })();
   </script>
 </body>
