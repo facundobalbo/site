@@ -135,8 +135,8 @@
     .music-members-note { font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: 6px; line-height: 1.5; }
 
     /* Audio player */
-    /* Drive iframe player */
-    .drive-player-frame { width: 100%; height: 80px; border: none; display: block; background: #111; }
+    /* SoundCloud embed */
+    .sc-embed { display: block; width: 100%; border: none; }
 
     /* Playlist */
     .music-playlist { border: 1px solid var(--border); border-top: none; }
@@ -230,45 +230,14 @@
         return '<img class="music-card-img" src="' + cloudUrl(image_cloudinary) + '" alt="' + name + '" loading="lazy" />';
       }
 
-      // ---- DRIVE IFRAME PLAYER ----
-      function driveId(url) {
-        var m = url.match(/[?&]id=([^&]+)/);
-        return m ? m[1] : null;
-      }
-
-      function iframePlayerHtml(id, tracks) {
-        var firstId = driveId(tracks[0].url);
-        var html = '<iframe class="drive-player-frame" id="dif-' + id + '" src="" '
-          + 'data-src="https://drive.google.com/file/d/' + firstId + '/preview" '
-          + 'frameborder="0" allow="autoplay" allowfullscreen></iframe>';
-        if (tracks.length > 1) {
-          html += '<div class="music-playlist" id="apl-' + id + '">';
-          tracks.forEach(function (t, i) {
-            html += '<div class="music-playlist-item' + (i === 0 ? ' active' : '') + '" data-driveid="' + driveId(t.url) + '" data-pid="' + id + '">'
-              + '<span class="music-playlist-num">' + String(i + 1).padStart(2, '0') + '</span>'
-              + '<span class="music-playlist-title">' + t.title + '</span>'
-              + '</div>';
-          });
-          html += '</div>';
-        }
-        return html;
-      }
-
-      function initDrivePlayer(id) {
-        var iframe = document.getElementById('dif-' + id);
-        if (!iframe || iframe.src) return;
-        iframe.src = iframe.dataset.src;
-        var plist = document.getElementById('apl-' + id);
-        if (plist) {
-          plist.querySelectorAll('.music-playlist-item').forEach(function (el) {
-            el.addEventListener('click', function () {
-              iframe.src = 'https://drive.google.com/file/d/' + el.dataset.driveid + '/preview';
-              plist.querySelectorAll('.music-playlist-item').forEach(function (li) {
-                li.classList.toggle('active', li === el);
-              });
-            });
-          });
-        }
+      // ---- SOUNDCLOUD EMBED ----
+      function soundcloudEmbed(url, isSet) {
+        var encoded = encodeURIComponent(url);
+        var h = isSet ? 300 : 166;
+        return '<iframe class="sc-embed" height="' + h + '" scrolling="no" frameborder="no" allow="autoplay" loading="lazy" '
+          + 'src="https://w.soundcloud.com/player/?url=' + encoded
+          + '&color=%23c8956c&auto_play=false&hide_related=true'
+          + '&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"></iframe>';
       }
 
       // ---- SPOTIFY ----
@@ -300,21 +269,19 @@
 
       function audioHtml(p) {
         if (p.id === 'deja-vu') {
-          var tracks = p.songs.map(function (s) { return { title: s.title, url: s.drive_url }; });
-          return '<div class="msec"><div class="msec-label">AUDIO</div>' + iframePlayerHtml('deja-vu', tracks) + '</div>';
+          return '<div class="msec"><div class="msec-label">AUDIO</div>' + soundcloudEmbed(p.soundcloud_set, true) + '</div>';
         }
         if (p.id === 'vade-retro') {
-          var tracks = p.songs.map(function (s) { return { title: s.title, url: s.drive_url }; });
-          return '<div class="msec"><div class="msec-label">AUDIO</div>' + iframePlayerHtml('vade-retro', tracks) + '</div>';
+          return '<div class="msec"><div class="msec-label">AUDIO</div>' + soundcloudEmbed(p.soundcloud_set, true) + '</div>';
         }
         if (p.id === 'prana') {
           var h = '<div class="msec"><div class="msec-label">AUDIO</div>';
           p.albums.forEach(function (a) {
             h += '<div class="music-spotify-sublabel">' + a.title.toUpperCase() + '</div>' + spotifyEmbed(a.spotify_embed_id);
           });
-          if (p.personal_track) {
+          if (p.personal_track && p.personal_track.soundcloud_url) {
             h += '<div class="music-spotify-sublabel">ARCHIVO PERSONAL — ' + p.personal_track.title.toUpperCase() + '</div>';
-            h += iframePlayerHtml('prana-personal', [{ title: p.personal_track.title, url: p.personal_track.drive_url }]);
+            h += soundcloudEmbed(p.personal_track.soundcloud_url, false);
           }
           h += '</div>';
           return h;
@@ -326,8 +293,7 @@
             + '</div>';
         }
         if (p.id === 'vox-futura') {
-          var tracks = p.songs.map(function (s) { return { title: s.title, url: s.drive_url }; });
-          return '<div class="msec"><div class="msec-label">AUDIO</div>' + iframePlayerHtml('vox-futura', tracks) + '</div>';
+          return '<div class="msec"><div class="msec-label">AUDIO</div>' + soundcloudEmbed(p.soundcloud_set, true) + '</div>';
         }
         return '';
       }
@@ -405,6 +371,7 @@
             { name: 'Facundo Vendramini', role: 'Bajo' },
             { name: 'Facundo Balbo', role: 'Batería' }
           ],
+          soundcloud_set: 'https://soundcloud.com/jey-289063584/sets/deja-vu',
           members_note: 'En sus comienzos la guitarra principal estaba en manos de Mauro Quiroga, que terminó dejando la banda.',
           songs: [
             { title: 'Todo Para Mí', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=11Crj3UFAKbcqF6Af8td4ou3wbg_PARCI' },
@@ -419,6 +386,7 @@
           id: 'vade-retro', name: 'Vade Retro', period: '2017–~2019', status: 'inactiva',
           genre: ['Hard Rock', 'Heavy Metal'],
           description: 'En 2017, ya estudiando en Córdoba, Fede y Joaco armaron un proyecto de rock pesado. Me sumé como baterista junto con Lauti. Duró un par de años y fue el primer acercamiento real al compromiso y la dedicación que requiere sostener una banda.',
+          soundcloud_set: 'https://soundcloud.com/jey-289063584/sets/vade-retro',
           image_cloudinary: 'PLACEHOLDER_vade_retro_logo',
           members: [
             { name: 'Federico Borgatello', role: 'Voz y guitarra rítmica' },
@@ -459,7 +427,7 @@
           ],
           personal_track: {
             title: 'Tantas Noches',
-            drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1QA-nZJ04PGMthWui9q4K6NrdWqArAneJ'
+            soundcloud_url: 'https://soundcloud.com/jey-289063584/tantas-noches'
           },
           press: [],
           links: {
@@ -485,6 +453,7 @@
           id: 'vox-futura', name: 'Vox Futura', period: '2026–presente', status: 'activo',
           genre: ['Ambient', 'Electrónica'],
           description: 'Mi proyecto actual. Nació en 2026 y la idea es desarrollarlo junto con los hermanos de Prana. Hay 9 canciones grabadas — acá podés escucharlas.',
+          soundcloud_set: 'https://soundcloud.com/jey-289063584/sets/equipaje/s-fZR4fQNicl8',
           image_cloudinary: 'PLACEHOLDER_vox_futura',
           songs: [
             { title: 'Punto de fuga',  drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=162V6jgQdjoVtQRU4FYUmie5E_f70xcmJ' },
@@ -505,21 +474,11 @@
       // ---- RENDER ----
       document.getElementById('music-grid').innerHTML = projects.map(buildCard).join('');
 
-      // ---- ACCORDION + lazy init audio ----
+      // ---- ACCORDION ----
       projects.forEach(function (p) {
         var card = document.getElementById('card-' + p.id);
-        var header = card.querySelector('.music-card-header');
-        var inited = false;
-
-        header.addEventListener('click', function () {
+        card.querySelector('.music-card-header').addEventListener('click', function () {
           card.classList.toggle('open');
-          if (card.classList.contains('open') && !inited) {
-            inited = true;
-            if (p.id === 'deja-vu')    initDrivePlayer('deja-vu');
-            if (p.id === 'vade-retro') initDrivePlayer('vade-retro');
-            if (p.id === 'prana')      initDrivePlayer('prana-personal');
-            if (p.id === 'vox-futura') initDrivePlayer('vox-futura');
-          }
         });
       });
 
