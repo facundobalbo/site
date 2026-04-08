@@ -135,40 +135,8 @@
     .music-members-note { font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: 6px; line-height: 1.5; }
 
     /* Audio player */
-    .audio-player {
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .audio-btn {
-      width: 26px; height: 26px;
-      border: 1px solid var(--border);
-      background: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      font-size: 10px;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .audio-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .audio-track-title {
-      flex: 1;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-muted);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .audio-progress {
-      width: 70px; height: 2px;
-      background: var(--border);
-      cursor: pointer; flex-shrink: 0; position: relative;
-    }
-    .audio-progress-fill { height: 100%; background: var(--accent); width: 0%; pointer-events: none; }
-    .audio-time { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); flex-shrink: 0; min-width: 30px; }
-    .audio-status { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); flex-shrink: 0; min-width: 30px; }
+    /* Drive iframe player */
+    .drive-player-frame { width: 100%; height: 80px; border: none; display: block; background: #111; }
 
     /* Playlist */
     .music-playlist { border: 1px solid var(--border); border-top: none; }
@@ -262,36 +230,21 @@
         return '<img class="music-card-img" src="' + cloudUrl(image_cloudinary) + '" alt="' + name + '" loading="lazy" />';
       }
 
-      // ---- AUDIO ENGINE ----
-      var instances = {};
-
-      function fmt(s) {
-        var m = Math.floor(s / 60), sec = Math.floor(s % 60);
-        return m + ':' + (sec < 10 ? '0' : '') + sec;
-      }
-
-      // Convierte URLs de Google Drive al dominio CDN directo para evitar redirecciones
-      function normalizeAudioUrl(url) {
+      // ---- DRIVE IFRAME PLAYER ----
+      function driveId(url) {
         var m = url.match(/[?&]id=([^&]+)/);
-        if (m && url.indexOf('drive.google.com') !== -1) {
-          return 'https://drive.usercontent.google.com/download?id=' + m[1] + '&export=download&confirm=t';
-        }
-        return url;
+        return m ? m[1] : null;
       }
 
-      function playerHtml(id, tracks) {
-        instances[id] = { tracks: tracks, current: 0, playing: false, audio: null };
-        var html = '<div class="audio-player" id="ap-' + id + '">'
-          + '<button class="audio-btn" id="ab-' + id + '">▶</button>'
-          + '<span class="audio-track-title" id="at-' + id + '">' + tracks[0].title + '</span>'
-          + '<div class="audio-progress" id="apr-' + id + '"><div class="audio-progress-fill" id="af-' + id + '"></div></div>'
-          + '<span class="audio-time" id="atm-' + id + '">0:00</span>'
-          + '<span class="audio-status" id="ast-' + id + '"></span>'
-          + '</div>';
+      function iframePlayerHtml(id, tracks) {
+        var firstId = driveId(tracks[0].url);
+        var html = '<iframe class="drive-player-frame" id="dif-' + id + '" src="" '
+          + 'data-src="https://drive.google.com/file/d/' + firstId + '/preview" '
+          + 'frameborder="0" allow="autoplay" allowfullscreen></iframe>';
         if (tracks.length > 1) {
           html += '<div class="music-playlist" id="apl-' + id + '">';
           tracks.forEach(function (t, i) {
-            html += '<div class="music-playlist-item' + (i === 0 ? ' active' : '') + '" data-i="' + i + '">'
+            html += '<div class="music-playlist-item' + (i === 0 ? ' active' : '') + '" data-driveid="' + driveId(t.url) + '" data-pid="' + id + '">'
               + '<span class="music-playlist-num">' + String(i + 1).padStart(2, '0') + '</span>'
               + '<span class="music-playlist-title">' + t.title + '</span>'
               + '</div>';
@@ -301,78 +254,21 @@
         return html;
       }
 
-      function initPlayer(id) {
-        var inst = instances[id];
-        if (!inst || inst.audio) return;
-        inst.audio = new Audio();
-
-        var btn    = document.getElementById('ab-' + id);
-        var titleEl = document.getElementById('at-' + id);
-        var fill   = document.getElementById('af-' + id);
-        var timeEl = document.getElementById('atm-' + id);
-        var prog   = document.getElementById('apr-' + id);
-        var plist  = document.getElementById('apl-' + id);
-        var status = document.getElementById('ast-' + id);
-
-        function setStatus(msg) { if (status) status.textContent = msg; }
-
-        function load(idx) {
-          inst.current = idx;
-          inst.audio.src = normalizeAudioUrl(inst.tracks[idx].url);
-          titleEl.textContent = inst.tracks[idx].title;
-          fill.style.width = '0%';
-          timeEl.textContent = '0:00';
-          setStatus('');
-          if (plist) plist.querySelectorAll('.music-playlist-item').forEach(function (el) {
-            el.classList.toggle('active', parseInt(el.dataset.i) === idx);
+      function initDrivePlayer(id) {
+        var iframe = document.getElementById('dif-' + id);
+        if (!iframe || iframe.src) return;
+        iframe.src = iframe.dataset.src;
+        var plist = document.getElementById('apl-' + id);
+        if (plist) {
+          plist.querySelectorAll('.music-playlist-item').forEach(function (el) {
+            el.addEventListener('click', function () {
+              iframe.src = 'https://drive.google.com/file/d/' + el.dataset.driveid + '/preview';
+              plist.querySelectorAll('.music-playlist-item').forEach(function (li) {
+                li.classList.toggle('active', li === el);
+              });
+            });
           });
-          if (inst.playing) {
-            setStatus('...');
-            inst.audio.play().then(function () { setStatus(''); }).catch(function () {
-              btn.textContent = '▶'; inst.playing = false; setStatus('error');
-            });
-          }
         }
-
-        inst.audio.src = normalizeAudioUrl(inst.tracks[0].url);
-
-        btn.addEventListener('click', function () {
-          if (inst.playing) {
-            inst.audio.pause(); btn.textContent = '▶'; inst.playing = false; setStatus('');
-          } else {
-            setStatus('...');
-            inst.audio.play().then(function () {
-              btn.textContent = '⏸'; inst.playing = true; setStatus('');
-            }).catch(function () {
-              btn.textContent = '▶'; inst.playing = false; setStatus('error');
-            });
-          }
-        });
-        inst.audio.addEventListener('waiting', function () { if (inst.playing) setStatus('...'); });
-        inst.audio.addEventListener('playing', function () { setStatus(''); });
-        inst.audio.addEventListener('timeupdate', function () {
-          if (inst.audio.duration) {
-            fill.style.width = (inst.audio.currentTime / inst.audio.duration * 100) + '%';
-            timeEl.textContent = fmt(inst.audio.currentTime);
-          }
-        });
-        inst.audio.addEventListener('ended', function () {
-          btn.textContent = '▶'; inst.playing = false; setStatus('');
-          if (inst.tracks.length > 1 && inst.current < inst.tracks.length - 1) {
-            inst.playing = true; load(inst.current + 1);
-          } else { fill.style.width = '0%'; timeEl.textContent = '0:00'; }
-        });
-        inst.audio.addEventListener('error', function () {
-          btn.textContent = '▶'; inst.playing = false; setStatus('error');
-        });
-        prog.addEventListener('click', function (e) {
-          if (!inst.audio.duration) return;
-          var r = prog.getBoundingClientRect();
-          inst.audio.currentTime = ((e.clientX - r.left) / r.width) * inst.audio.duration;
-        });
-        if (plist) plist.querySelectorAll('.music-playlist-item').forEach(function (el) {
-          el.addEventListener('click', function () { load(parseInt(el.dataset.i)); });
-        });
       }
 
       // ---- SPOTIFY ----
@@ -405,11 +301,11 @@
       function audioHtml(p) {
         if (p.id === 'deja-vu') {
           var tracks = p.songs.map(function (s) { return { title: s.title, url: s.drive_url }; });
-          return '<div class="msec"><div class="msec-label">AUDIO</div>' + playerHtml('deja-vu', tracks) + '</div>';
+          return '<div class="msec"><div class="msec-label">AUDIO</div>' + iframePlayerHtml('deja-vu', tracks) + '</div>';
         }
         if (p.id === 'vade-retro') {
           var tracks = p.songs.map(function (s) { return { title: s.title, url: s.drive_url }; });
-          return '<div class="msec"><div class="msec-label">AUDIO</div>' + playerHtml('vade-retro', tracks) + '</div>';
+          return '<div class="msec"><div class="msec-label">AUDIO</div>' + iframePlayerHtml('vade-retro', tracks) + '</div>';
         }
         if (p.id === 'prana') {
           var h = '<div class="msec"><div class="msec-label">AUDIO</div>';
@@ -418,7 +314,7 @@
           });
           if (p.personal_track) {
             h += '<div class="music-spotify-sublabel">ARCHIVO PERSONAL — ' + p.personal_track.title.toUpperCase() + '</div>';
-            h += playerHtml('prana-personal', [{ title: p.personal_track.title + ' (archivo personal)', url: p.personal_track.drive_url }]);
+            h += iframePlayerHtml('prana-personal', [{ title: p.personal_track.title, url: p.personal_track.drive_url }]);
           }
           h += '</div>';
           return h;
@@ -431,7 +327,7 @@
         }
         if (p.id === 'vox-futura') {
           var tracks = p.songs.map(function (s) { return { title: s.title, url: s.drive_url }; });
-          return '<div class="msec"><div class="msec-label">AUDIO</div>' + playerHtml('vox-futura', tracks) + '</div>';
+          return '<div class="msec"><div class="msec-label">AUDIO</div>' + iframePlayerHtml('vox-futura', tracks) + '</div>';
         }
         return '';
       }
@@ -619,10 +515,10 @@
           card.classList.toggle('open');
           if (card.classList.contains('open') && !inited) {
             inited = true;
-            if (p.id === 'deja-vu')    initPlayer('deja-vu');
-            if (p.id === 'vade-retro') initPlayer('vade-retro');
-            if (p.id === 'prana')      initPlayer('prana-personal');
-            if (p.id === 'vox-futura') initPlayer('vox-futura');
+            if (p.id === 'deja-vu')    initDrivePlayer('deja-vu');
+            if (p.id === 'vade-retro') initDrivePlayer('vade-retro');
+            if (p.id === 'prana')      initDrivePlayer('prana-personal');
+            if (p.id === 'vox-futura') initDrivePlayer('vox-futura');
           }
         });
       });
