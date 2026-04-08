@@ -32,18 +32,17 @@ function plainText(richText) {
 }
 
 function extractRating(props) {
-  // Intenta number primero, luego select
   if (props.Puntuacion?.type === 'number' && props.Puntuacion.number != null) {
     const n = props.Puntuacion.number;
-    if (n <= 5) {
-      return '★'.repeat(n) + '☆'.repeat(5 - n);
-    }
-    return `${n} / 10`;
+    if (n <= 5) return { display: '★'.repeat(n) + '☆'.repeat(5 - n), num: n };
+    return { display: `${n} / 10`, num: n };
   }
   if (props.Puntuacion?.type === 'select' && props.Puntuacion.select?.name) {
-    return props.Puntuacion.select.name;
+    const name = props.Puntuacion.select.name;
+    const num = (name.match(/★/g) || []).length;
+    return { display: name, num };
   }
-  return '';
+  return { display: '', num: 0 };
 }
 
 async function getBlocks(pageId) {
@@ -87,28 +86,25 @@ module.exports = async (req, res) => {
     const dbId = process.env.NOTION_BIBLIOTECA_DB;
     if (!dbId) throw new Error('NOTION_BIBLIOTECA_DB no configurado');
 
-    const data = await queryNotion(dbId, {
-      filter: {
-        property: 'Actual',
-        checkbox: { equals: false },
-      },
-      page_size: 100,
-    });
+    // Traer todos — el filtro leídos/pendientes lo hace el frontend
+    const data = await queryNotion(dbId, { page_size: 100 });
 
     const libros = await Promise.all(
       data.results.map(async (page) => {
         const p = page.properties;
         const blocks = await getBlocks(page.id);
 
-        // Buscar la propiedad de tipo "title" sin importar su nombre
         const tituloRaw = getTitleProp(p);
+        const rating = extractRating(p);
 
         return {
           id: page.id,
           titulo: plainText(tituloRaw),
           autor: plainText(p['Autor']?.rich_text || []),
-          puntuacion: extractRating(p),
+          puntuacion: rating.display,
+          ratingNum: rating.num,
           etiqueta: p['Etiqueta']?.select?.name || '',
+          actual: p['Actual']?.checkbox ?? false,
           resena: blocksToText(blocks),
         };
       })
