@@ -104,7 +104,8 @@ module.exports = async (req, res) => {
           puntuacion: rating.display,
           ratingNum: rating.num,
           etiqueta: p['Etiqueta']?.select?.name || '',
-          actual: p['Actual']?.checkbox ?? false,
+          leido: p['Leido']?.checkbox ?? false,    // ya terminado
+          actual: p['Actual']?.checkbox ?? false,   // leyendo ahora
           resena: blocksToText(blocks),
         };
       })

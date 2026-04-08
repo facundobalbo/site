@@ -20,15 +20,16 @@
         <p>Filosofía, psicología, ingeniería y la novela ocasional. Va creciendo de a poco.</p>
       </header>
 
-      <!-- FILTRO PRIMARIO: Leídos / Pendientes -->
+      <!-- FILTRO PRIMARIO: mode-pill (no usa filter-pill para no chocar con main.js) -->
       <div class="filter-bar" id="mode-bar">
-        <button class="filter-pill active" data-mode="leidos">LEÍDOS</button>
-        <button class="filter-pill" data-mode="pendientes">PENDIENTES</button>
+        <button class="mode-pill active" data-mode="leidos">LEÍDOS</button>
+        <button class="mode-pill" data-mode="leyendo">LEYENDO</button>
+        <button class="mode-pill" data-mode="pendientes">PENDIENTES</button>
       </div>
 
-      <!-- FILTRO DE CATEGORÍA (solo visible en LEÍDOS) -->
-      <div class="filter-bar" id="category-bar" style="margin-top: -16px;">
-        <button class="filter-pill active" data-filter="all">TODOS</button>
+      <!-- FILTRO DE CATEGORÍA: cat-pill -->
+      <div class="filter-bar" id="category-bar">
+        <button class="cat-pill active" data-filter="all">TODOS</button>
       </div>
 
       <div class="books-grid" id="libros-container">
@@ -57,9 +58,9 @@
   <script src="js/main.js"></script>
   <script>
     (function () {
-      var allLibros = [];
-      var currentMode = 'leidos';     // 'leidos' | 'pendientes'
-      var currentFilter = 'all';       // slug de categoría o 'all'
+      var allLibros    = [];
+      var currentMode  = 'leidos';
+      var currentFilter = 'all';
 
       var PALETTE = ['#c8956c', '#4a6a8a', '#6a8a4a', '#8a4a6a', '#4a7a7a', '#7a6a4a'];
       var categoryColors = {};
@@ -74,7 +75,7 @@
           .trim();
       }
 
-      function getCategoryColor(slug) {
+      function getColor(slug) {
         if (!categoryColors[slug]) {
           categoryColors[slug] = PALETTE[paletteIndex % PALETTE.length];
           paletteIndex++;
@@ -82,45 +83,38 @@
         return categoryColors[slug];
       }
 
-      // Devuelve los libros a mostrar según modo y categoría, ya ordenados
       function getVisible() {
-        var lista = allLibros.filter(function (l) {
-          if (currentMode === 'leidos') return !l.actual;
-          return l.actual;
-        });
-
+        var lista;
         if (currentMode === 'leidos') {
-          // Ordenar: rating desc, luego titulo alphabético
+          lista = allLibros.filter(function (l) { return l.leido; });
           lista.sort(function (a, b) {
             if (b.ratingNum !== a.ratingNum) return b.ratingNum - a.ratingNum;
             return a.titulo.localeCompare(b.titulo, 'es');
           });
-          // Filtrar categoría
           if (currentFilter !== 'all') {
-            lista = lista.filter(function (l) {
-              return slugify(l.etiqueta) === currentFilter;
-            });
+            lista = lista.filter(function (l) { return slugify(l.etiqueta) === currentFilter; });
           }
+        } else if (currentMode === 'leyendo') {
+          lista = allLibros.filter(function (l) { return l.actual; });
+        } else {
+          // pendientes: no leído y no leyendo
+          lista = allLibros.filter(function (l) { return !l.leido && !l.actual; });
         }
-
         return lista;
       }
 
       function renderLibro(libro) {
-        var cat = slugify(libro.etiqueta);
-        var color = getCategoryColor(cat || 'sin-categoria');
-        var etiquetaLabel = libro.etiqueta
+        var cat   = slugify(libro.etiqueta);
+        var color = getColor(cat || 'sin-categoria');
+        var badge = libro.etiqueta
           ? '<span class="book-category" style="color:' + color + ';">' + libro.etiqueta.toUpperCase() + '</span>'
           : '';
-        var primerParrafo = (libro.resena || '').split('\n\n')[0] || '';
-        var resena = primerParrafo
-          ? '<div class="book-review">' + primerParrafo + '</div>'
-          : '';
-        var hint = !libro.actual
-          ? '<span class="book-card-hint">Ver reseña →</span>'
-          : '';
+        var preview = (libro.resena || '').split('\n\n')[0] || '';
+        var resena  = preview ? '<div class="book-review">' + preview + '</div>' : '';
+        var hint    = libro.leido ? '<span class="book-card-hint">Ver reseña →</span>' : '';
+        var clickable = libro.leido ? ' book-card--clickable' : '';
 
-        return '<div class="book-card' + (!libro.actual ? ' book-card--clickable' : '') + '"'
+        return '<div class="book-card' + clickable + '"'
           + ' data-id="' + libro.id + '"'
           + ' data-category="' + cat + '"'
           + ' style="border-left-color:' + color + ';">'
@@ -128,51 +122,49 @@
           + '<div class="book-author">' + libro.autor + '</div>'
           + '<div class="book-rating">' + (libro.puntuacion || '') + '</div>'
           + resena
-          + '<div class="book-footer">' + etiquetaLabel + hint + '</div>'
+          + '<div class="book-footer">' + badge + hint + '</div>'
           + '</div>';
       }
 
       function renderAll() {
-        var visible = getVisible();
+        var visible   = getVisible();
         var container = document.getElementById('libros-container');
         if (visible.length === 0) {
           container.innerHTML = '<p class="biblioteca-empty">Sin libros por el momento.</p>';
-        } else {
-          container.innerHTML = visible.map(renderLibro).join('');
-          // Attach click on leídos cards
-          if (currentMode === 'leidos') {
-            container.querySelectorAll('.book-card--clickable').forEach(function (card) {
-              card.addEventListener('click', function () {
-                var libro = allLibros.find(function (l) { return l.id === card.dataset.id; });
-                if (libro) openBookModal(libro);
-              });
+          return;
+        }
+        container.innerHTML = visible.map(renderLibro).join('');
+        if (currentMode === 'leidos' || currentMode === 'leyendo') {
+          container.querySelectorAll('.book-card--clickable').forEach(function (card) {
+            card.addEventListener('click', function () {
+              var libro = allLibros.find(function (l) { return l.id === card.dataset.id; });
+              if (libro) openBookModal(libro);
             });
-          }
+          });
         }
       }
 
       function buildCategoryBar(libros) {
-        var leidos = libros.filter(function (l) { return !l.actual; });
-        var seen = {};
-        var bar = document.getElementById('category-bar');
-        // Limpiar pills previos (excepto TODOS)
-        bar.querySelectorAll('[data-filter]:not([data-filter="all"])').forEach(function (el) { el.remove(); });
+        var leidos = libros.filter(function (l) { return l.leido; });
+        var seen   = {};
+        var bar    = document.getElementById('category-bar');
+        bar.querySelectorAll('.cat-pill:not([data-filter="all"])').forEach(function (el) { el.remove(); });
 
         leidos.forEach(function (l) {
           var slug = slugify(l.etiqueta);
           if (l.etiqueta && !seen[slug]) {
             seen[slug] = true;
             var btn = document.createElement('button');
-            btn.className = 'filter-pill';
+            btn.className = 'cat-pill';
             btn.dataset.filter = slug;
             btn.textContent = l.etiqueta.toUpperCase();
             bar.appendChild(btn);
           }
         });
 
-        bar.querySelectorAll('.filter-pill').forEach(function (pill) {
+        bar.querySelectorAll('.cat-pill').forEach(function (pill) {
           pill.addEventListener('click', function () {
-            bar.querySelectorAll('.filter-pill').forEach(function (p) { p.classList.remove('active'); });
+            bar.querySelectorAll('.cat-pill').forEach(function (p) { p.classList.remove('active'); });
             pill.classList.add('active');
             currentFilter = pill.dataset.filter;
             renderAll();
@@ -181,7 +173,7 @@
       }
 
       function openBookModal(libro) {
-        var color = getCategoryColor(slugify(libro.etiqueta) || 'sin-categoria');
+        var color = getColor(slugify(libro.etiqueta) || 'sin-categoria');
         document.getElementById('bm-rating').innerHTML = libro.puntuacion || '';
         document.getElementById('bm-title').textContent = libro.titulo;
         document.getElementById('bm-author').textContent = libro.autor;
@@ -189,8 +181,7 @@
         catEl.textContent = libro.etiqueta ? libro.etiqueta.toUpperCase() : '';
         catEl.style.color = color;
         var parrafos = (libro.resena || 'Sin reseña.')
-          .split('\n\n')
-          .filter(Boolean)
+          .split('\n\n').filter(Boolean)
           .map(function (p) { return '<p>' + p.replace(/\n/g, '<br>') + '</p>'; })
           .join('');
         document.getElementById('bm-review').innerHTML = parrafos;
@@ -203,29 +194,28 @@
         document.body.style.overflow = '';
       }
 
-      // Modal close handlers
+      // Modal handlers
       var overlay = document.getElementById('book-modal-overlay');
       document.getElementById('book-modal-close').addEventListener('click', closeBookModal);
-      overlay.addEventListener('click', function (e) {
-        if (e.target === overlay) closeBookModal();
-      });
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) closeBookModal(); });
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && overlay.classList.contains('open')) closeBookModal();
       });
 
-      // Mode bar (Leídos / Pendientes)
-      document.getElementById('mode-bar').querySelectorAll('.filter-pill').forEach(function (pill) {
+      // Mode bar (LEÍDOS / PENDIENTES)
+      document.getElementById('mode-bar').querySelectorAll('.mode-pill').forEach(function (pill) {
         pill.addEventListener('click', function () {
-          document.getElementById('mode-bar').querySelectorAll('.filter-pill')
+          document.getElementById('mode-bar').querySelectorAll('.mode-pill')
             .forEach(function (p) { p.classList.remove('active'); });
           pill.classList.add('active');
-          currentMode = pill.dataset.mode;
+          currentMode   = pill.dataset.mode;
           currentFilter = 'all';
-          // Resetear pill TODOS en category-bar
-          document.getElementById('category-bar').querySelectorAll('.filter-pill')
+          // Reset cat-pill
+          document.getElementById('category-bar').querySelectorAll('.cat-pill')
             .forEach(function (p) { p.classList.remove('active'); });
           document.querySelector('#category-bar [data-filter="all"]').classList.add('active');
-          // Mostrar/ocultar category-bar
+          // Mostrar/ocultar filtro de categoría
+          // Categoría solo visible en LEÍDOS
           document.getElementById('category-bar').style.display =
             currentMode === 'leidos' ? '' : 'none';
           renderAll();
@@ -246,8 +236,7 @@
             return;
           }
           allLibros = data.libros;
-          // Pre-asignar colores
-          allLibros.forEach(function (l) { getCategoryColor(slugify(l.etiqueta) || 'sin-categoria'); });
+          allLibros.forEach(function (l) { getColor(slugify(l.etiqueta) || 'sin-categoria'); });
           buildCategoryBar(allLibros);
           renderAll();
         })
