@@ -305,7 +305,6 @@
         var inst = instances[id];
         if (!inst || inst.audio) return;
         inst.audio = new Audio();
-        inst.audio.crossOrigin = 'anonymous';
 
         var btn    = document.getElementById('ab-' + id);
         var titleEl = document.getElementById('at-' + id);
