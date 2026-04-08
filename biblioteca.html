@@ -27,117 +27,10 @@
         <button class="filter-pill active" data-filter="all">TODOS</button>
       </div>
 
-      <!-- BOOKS LIST — cargado dinámicamente desde /api/biblioteca -->
+      <!-- BOOKS LIST -->
       <div class="books-grid" id="libros-container">
         <p class="biblioteca-loading">Cargando...</p>
       </div>
-
-      <script>
-        (function () {
-          // Paleta de colores para categorías (rota si hay más de las previstas)
-          var PALETTE = ['#c8956c', '#4a6a8a', '#6a8a4a', '#8a4a6a', '#4a7a7a', '#7a6a4a'];
-          var categoryColors = {};
-          var paletteIndex = 0;
-
-          function slugify(str) {
-            return (str || '')
-              .toLowerCase()
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .replace(/[-\s]+/g, '-')
-              .trim();
-          }
-
-          function getCategoryColor(slug) {
-            if (!categoryColors[slug]) {
-              categoryColors[slug] = PALETTE[paletteIndex % PALETTE.length];
-              paletteIndex++;
-            }
-            return categoryColors[slug];
-          }
-
-          function renderLibro(libro) {
-            var cat = slugify(libro.etiqueta);
-            var color = getCategoryColor(cat || 'sin-categoria');
-            var etiquetaLabel = libro.etiqueta
-              ? `<span class="book-category" style="color:${color};">${libro.etiqueta.toUpperCase()}</span>`
-              : '';
-            // Reseña: solo primer párrafo, máximo 3 líneas (el clamp lo hace el CSS)
-            var primerParrafo = (libro.resena || '').split('\n\n')[0] || '';
-            var resena = primerParrafo
-              ? `<div class="book-review">${primerParrafo}</div>`
-              : '';
-
-            return `
-              <div class="book-card" data-category="${cat}" style="border-left-color:${color};">
-                <div class="book-title">${libro.titulo}</div>
-                <div class="book-author">${libro.autor}</div>
-                <div class="book-rating">${libro.puntuacion || ''}</div>
-                ${resena}
-                <div class="book-footer">${etiquetaLabel}</div>
-              </div>`;
-          }
-
-          function buildFilters(libros) {
-            var seen = {};
-            var cats = [];
-            libros.forEach(function (l) {
-              var slug = slugify(l.etiqueta);
-              if (l.etiqueta && !seen[slug]) {
-                seen[slug] = true;
-                cats.push({ slug: slug, label: l.etiqueta.toUpperCase(), color: getCategoryColor(slug) });
-              }
-            });
-
-            var bar = document.getElementById('filter-bar');
-            cats.forEach(function (c) {
-              var btn = document.createElement('button');
-              btn.className = 'filter-pill';
-              btn.dataset.filter = c.slug;
-              btn.textContent = c.label;
-              btn.style.setProperty('--pill-color', c.color);
-              bar.appendChild(btn);
-            });
-
-            bar.querySelectorAll('.filter-pill').forEach(function (pill) {
-              pill.addEventListener('click', function () {
-                bar.querySelectorAll('.filter-pill').forEach(function (p) { p.classList.remove('active'); });
-                pill.classList.add('active');
-                var filter = pill.dataset.filter;
-                document.querySelectorAll('.book-card').forEach(function (card) {
-                  if (filter === 'all') {
-                    card.classList.remove('hidden');
-                  } else {
-                    card.classList.toggle('hidden', card.dataset.category !== filter);
-                  }
-                });
-              });
-            });
-          }
-
-          fetch('/api/biblioteca')
-            .then(function (r) { return r.json(); })
-            .then(function (data) {
-              var container = document.getElementById('libros-container');
-              if (data.error) {
-                container.innerHTML = '<p class="biblioteca-error">No se pudo cargar la biblioteca.</p>';
-                return;
-              }
-              if (!data.libros || data.libros.length === 0) {
-                container.innerHTML = '<p class="biblioteca-empty">Sin libros por el momento.</p>';
-                return;
-              }
-              // Asignar colores antes de render para que buildFilters y renderLibro coincidan
-              data.libros.forEach(function (l) { getCategoryColor(slugify(l.etiqueta)); });
-              container.innerHTML = data.libros.map(renderLibro).join('');
-              buildFilters(data.libros);
-            })
-            .catch(function () {
-              document.getElementById('libros-container').innerHTML =
-                '<p class="biblioteca-error">No se pudo cargar la biblioteca.</p>';
-            });
-        })();
-      </script>
 
     </div>
 
@@ -146,6 +39,156 @@
     </footer>
   </main>
 
+  <!-- BOOK MODAL -->
+  <div class="essay-modal-overlay" id="book-modal-overlay">
+    <div class="essay-modal">
+      <div class="book-modal-rating" id="bm-rating"></div>
+      <div class="essay-modal-title" id="bm-title"></div>
+      <div class="book-modal-author" id="bm-author"></div>
+      <div class="book-modal-category" id="bm-category"></div>
+      <div class="essay-modal-body" id="bm-review"></div>
+      <button class="essay-modal-close" id="book-modal-close">CERRAR ✕</button>
+    </div>
+  </div>
+
   <script src="js/main.js"></script>
+  <script>
+    (function () {
+      var allLibros = [];
+      var PALETTE = ['#c8956c', '#4a6a8a', '#6a8a4a', '#8a4a6a', '#4a7a7a', '#7a6a4a'];
+      var categoryColors = {};
+      var paletteIndex = 0;
+
+      function slugify(str) {
+        return (str || '')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[-\s]+/g, '-')
+          .trim();
+      }
+
+      function getCategoryColor(slug) {
+        if (!categoryColors[slug]) {
+          categoryColors[slug] = PALETTE[paletteIndex % PALETTE.length];
+          paletteIndex++;
+        }
+        return categoryColors[slug];
+      }
+
+      function renderLibro(libro, index) {
+        var cat = slugify(libro.etiqueta);
+        var color = getCategoryColor(cat || 'sin-categoria');
+        var etiquetaLabel = libro.etiqueta
+          ? '<span class="book-category" style="color:' + color + ';">' + libro.etiqueta.toUpperCase() + '</span>'
+          : '';
+        var primerParrafo = (libro.resena || '').split('\n\n')[0] || '';
+        var resena = primerParrafo
+          ? '<div class="book-review">' + primerParrafo + '</div>'
+          : '';
+
+        return '<div class="book-card book-card--clickable" data-category="' + cat + '" data-idx="' + index + '" style="border-left-color:' + color + ';">'
+          + '<div class="book-title">' + libro.titulo + '</div>'
+          + '<div class="book-author">' + libro.autor + '</div>'
+          + '<div class="book-rating">' + (libro.puntuacion || '') + '</div>'
+          + resena
+          + '<div class="book-footer">' + etiquetaLabel + '<span class="book-card-hint">Ver reseña →</span></div>'
+          + '</div>';
+      }
+
+      function openBookModal(libro) {
+        var color = getCategoryColor(slugify(libro.etiqueta) || 'sin-categoria');
+        document.getElementById('bm-rating').innerHTML = libro.puntuacion || '';
+        document.getElementById('bm-title').textContent = libro.titulo;
+        document.getElementById('bm-author').textContent = libro.autor;
+        var catEl = document.getElementById('bm-category');
+        catEl.textContent = libro.etiqueta ? libro.etiqueta.toUpperCase() : '';
+        catEl.style.color = color;
+
+        var parrafos = (libro.resena || 'Sin reseña.')
+          .split('\n\n')
+          .filter(Boolean)
+          .map(function (p) { return '<p>' + p.replace(/\n/g, '<br>') + '</p>'; })
+          .join('');
+        document.getElementById('bm-review').innerHTML = parrafos;
+
+        document.getElementById('book-modal-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeBookModal() {
+        document.getElementById('book-modal-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      function buildFilters(libros) {
+        var seen = {};
+        var bar = document.getElementById('filter-bar');
+        libros.forEach(function (l) {
+          var slug = slugify(l.etiqueta);
+          if (l.etiqueta && !seen[slug]) {
+            seen[slug] = true;
+            var btn = document.createElement('button');
+            btn.className = 'filter-pill';
+            btn.dataset.filter = slug;
+            btn.textContent = l.etiqueta.toUpperCase();
+            bar.appendChild(btn);
+          }
+        });
+
+        bar.querySelectorAll('.filter-pill').forEach(function (pill) {
+          pill.addEventListener('click', function () {
+            bar.querySelectorAll('.filter-pill').forEach(function (p) { p.classList.remove('active'); });
+            pill.classList.add('active');
+            var filter = pill.dataset.filter;
+            document.querySelectorAll('.book-card').forEach(function (card) {
+              card.classList.toggle('hidden', filter !== 'all' && card.dataset.category !== filter);
+            });
+          });
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var overlay = document.getElementById('book-modal-overlay');
+        document.getElementById('book-modal-close').addEventListener('click', closeBookModal);
+        overlay.addEventListener('click', function (e) {
+          if (e.target === overlay) closeBookModal();
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && overlay.classList.contains('open')) closeBookModal();
+        });
+
+        fetch('/api/biblioteca')
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            var container = document.getElementById('libros-container');
+            if (data.error) {
+              container.innerHTML = '<p class="biblioteca-error">No se pudo cargar la biblioteca.</p>';
+              return;
+            }
+            if (!data.libros || data.libros.length === 0) {
+              container.innerHTML = '<p class="biblioteca-empty">Sin libros por el momento.</p>';
+              return;
+            }
+            allLibros = data.libros;
+            // Pre-asignar colores para consistencia entre cards y filtros
+            allLibros.forEach(function (l) { getCategoryColor(slugify(l.etiqueta) || 'sin-categoria'); });
+            container.innerHTML = allLibros.map(renderLibro).join('');
+            buildFilters(allLibros);
+
+            // Listeners de click en cards
+            document.querySelectorAll('.book-card--clickable').forEach(function (card) {
+              card.addEventListener('click', function () {
+                openBookModal(allLibros[parseInt(card.dataset.idx, 10)]);
+              });
+            });
+          })
+          .catch(function () {
+            document.getElementById('libros-container').innerHTML =
+              '<p class="biblioteca-error">No se pudo cargar la biblioteca.</p>';
+          });
+      });
+    })();
+  </script>
 </body>
 </html>

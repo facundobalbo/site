@@ -14,6 +14,17 @@ function headers() {
   };
 }
 
+function getTitleProp(props) {
+  const preferred = ['Título', 'Title', 'Name', 'Nombre'];
+  for (const name of preferred) {
+    if (props[name]?.type === 'title') return props[name].title;
+  }
+  for (const key of Object.keys(props)) {
+    if (props[key]?.type === 'title') return props[key].title;
+  }
+  return [];
+}
+
 function plainText(richText) {
   if (!Array.isArray(richText)) return '';
   return richText.map((rt) => rt.plain_text || '').join('');
@@ -67,28 +78,24 @@ module.exports = async (req, res) => {
     const dbId = process.env.NOTION_ENTRADAS_DB;
     if (!dbId) throw new Error('NOTION_ENTRADAS_DB no configurado');
 
-    const data = await queryNotion(dbId, {
-      filter: {
-        or: [
-          { property: 'Estado', select: { equals: 'Finalizado' } },
-          { property: 'Estado', select: { equals: 'En progreso' } },
-        ],
-      },
-      page_size: 100,
-    });
+    // Sin filtro servidor para mayor compatibilidad — el frontend filtra por Estado
+    const data = await queryNotion(dbId, { page_size: 100 });
 
     const escritos = await Promise.all(
       data.results.map(async (page) => {
         const p = page.properties;
         const blocks = await getBlocks(page.id);
 
-        const tituloRaw =
-          p['Título']?.title || p['Title']?.title || p['Name']?.title || [];
+        const tituloRaw = getTitleProp(p);
+
+        // Buscar el select de estado por nombre o por valor conocido
+        const estadoProp = p['Estado'] || p['State'] || p['Status'] || null;
+        const estado = estadoProp?.select?.name || estadoProp?.status?.name || '';
 
         return {
           id: page.id,
           titulo: plainText(tituloRaw),
-          estado: p['Estado']?.select?.name || '',
+          estado,
           cover: getCover(page),
           contenido: blocksToText(blocks),
         };

@@ -14,6 +14,18 @@ function headers() {
   };
 }
 
+function getTitleProp(props) {
+  const preferred = ['Título', 'Title', 'Name', 'Nombre', 'Libro'];
+  for (const name of preferred) {
+    if (props[name]?.type === 'title') return props[name].title;
+  }
+  // Fallback: cualquier propiedad de tipo title
+  for (const key of Object.keys(props)) {
+    if (props[key]?.type === 'title') return props[key].title;
+  }
+  return [];
+}
+
 function plainText(richText) {
   if (!Array.isArray(richText)) return '';
   return richText.map((rt) => rt.plain_text || '').join('');
@@ -88,9 +100,8 @@ module.exports = async (req, res) => {
         const p = page.properties;
         const blocks = await getBlocks(page.id);
 
-        // El nombre de la propiedad título puede ser "Título" o "Name"
-        const tituloRaw =
-          p['Título']?.title || p['Title']?.title || p['Name']?.title || [];
+        // Buscar la propiedad de tipo "title" sin importar su nombre
+        const tituloRaw = getTitleProp(p);
 
         return {
           id: page.id,

@@ -1785,6 +1785,53 @@ footer a:hover {
   margin-top: var(--space-md);
 }
 
+/* Book card — interacción */
+.book-card--clickable {
+  cursor: pointer;
+  transition: border-left-color 0.2s ease, background-color 0.15s ease;
+}
+
+.book-card--clickable:hover {
+  background-color: rgba(255,255,255,0.02);
+}
+
+.book-card-hint {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-left: auto;
+  transition: color 0.2s;
+}
+
+.book-card--clickable:hover .book-card-hint {
+  color: var(--text-muted);
+}
+
+/* Book modal */
+.book-modal-rating {
+  font-size: 26px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  margin-bottom: var(--space-md);
+}
+
+.book-modal-author {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.book-modal-category {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-lg);
+}
+
 /* Estados de carga / error */
 .biblioteca-loading,
 .biblioteca-error,
