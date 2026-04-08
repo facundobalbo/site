@@ -10,13 +10,10 @@
   <style>
     /* ---- GRID ---- */
     .music-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
       margin-top: 32px;
-    }
-    @media (max-width: 700px) {
-      .music-grid { grid-template-columns: 1fr; }
     }
 
     /* ---- CARD ---- */
@@ -315,12 +312,12 @@
           if (plist) plist.querySelectorAll('.music-playlist-item').forEach(function (el) {
             el.classList.toggle('active', parseInt(el.dataset.i) === idx);
           });
-          if (inst.playing) inst.audio.play();
+          if (inst.playing) inst.audio.play().catch(function () { btn.textContent = '▶'; inst.playing = false; });
         }
 
         btn.addEventListener('click', function () {
           if (inst.playing) { inst.audio.pause(); btn.textContent = '▶'; inst.playing = false; }
-          else { inst.audio.play(); btn.textContent = '⏸'; inst.playing = true; }
+          else { inst.audio.play().then(function () { btn.textContent = '⏸'; inst.playing = true; }).catch(function () { btn.textContent = '▶'; inst.playing = false; }); }
         });
         inst.audio.addEventListener('timeupdate', function () {
           if (inst.audio.duration) {
@@ -399,10 +396,8 @@
             + '</div>';
         }
         if (p.id === 'vox-futura') {
-          return '<div class="msec"><div class="msec-label">AUDIO</div>'
-            + '<p class="msec-text"><span class="music-badge music-badge--curso" style="display:inline-block;margin-bottom:8px;">EN CONSTRUCCIÓN</span></p>'
-            + '<p class="msec-text">Todavía sin material publicado. Hay 9 canciones listas para grabar. El EP <em>Equipaje</em> está en camino.</p>'
-            + '</div>';
+          var tracks = p.songs.map(function (s) { return { title: s.title, url: s.drive_url }; });
+          return '<div class="msec"><div class="msec-label">AUDIO</div>' + playerHtml('vox-futura', tracks) + '</div>';
         }
         return '';
       }
@@ -482,8 +477,8 @@
           ],
           members_note: 'En sus comienzos la guitarra principal estaba en manos de Mauro Quiroga, que terminó dejando la banda.',
           songs: [
-            { title: 'Todo Para Mí', drive_url: 'https://drive.google.com/uc?export=download&id=11Crj3UFAKbcqF6Af8td4ou3wbg_PARCI' },
-            { title: 'Dominó', drive_url: 'https://drive.google.com/uc?export=download&id=1au0PkSZqYLJB1YBIBmvdgS0eNEXI4Lbt' }
+            { title: 'Todo Para Mí', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=11Crj3UFAKbcqF6Af8td4ou3wbg_PARCI' },
+            { title: 'Dominó', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1au0PkSZqYLJB1YBIBmvdgS0eNEXI4Lbt' }
           ],
           press: [
             { source: 'San Luis Música – Ministerio de Turismo y las Culturas', date: '15/04/2014', headline: 'Deja Vú y Beluga grabaron su demo', url: null, image_cloudinary: 'PLACEHOLDER_deja_vu_diario' }
@@ -502,15 +497,15 @@
             { name: 'Facundo Balbo', role: 'Batería' }
           ],
           songs: [
-            { title: 'Mente Maestra', drive_url: 'https://drive.google.com/uc?export=download&id=1ds_27Mine710FDBktZucxpWozPTgO71f' },
-            { title: 'Recuerdo Vivo', drive_url: 'https://drive.google.com/uc?export=download&id=1qD46l7zlxs2xfH1xTzS5a1ws6DMxLw8D' },
-            { title: 'Traición', drive_url: 'https://drive.google.com/uc?export=download&id=15Daqs66jWRTPeDyJcPzCAQxvNtM5khTu' },
-            { title: 'El Distinto', drive_url: 'https://drive.google.com/uc?export=download&id=1KoT_cklMGtk-oAUUl6c8YhaduJhKRj-k' },
-            { title: 'Salvación Perdida', drive_url: 'https://drive.google.com/uc?export=download&id=1xAEI4SisdhVB6__nZF2f_mABI-YI6L38' },
-            { title: 'Peligrosa Tentación', drive_url: 'https://drive.google.com/uc?export=download&id=1Yvnz6SupxGeZCgjMN73a0sHci_cXmfLu' },
-            { title: 'Renacer', drive_url: 'https://drive.google.com/uc?export=download&id=148UR5Hxl2-y2pyofhrqzX4f25QpCYKM4' },
-            { title: 'Oscuro Presente', drive_url: 'https://drive.google.com/uc?export=download&id=1rZV3Q5M6B25Gwk9OS5wYUO3oJzznlh7H' },
-            { title: 'Medley Metallica (Bonus)', drive_url: 'https://drive.google.com/uc?export=download&id=1shnM6CmxcrWOFOifs0e4orV5Njk2tbW6' }
+            { title: 'Mente Maestra', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1ds_27Mine710FDBktZucxpWozPTgO71f' },
+            { title: 'Recuerdo Vivo', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1qD46l7zlxs2xfH1xTzS5a1ws6DMxLw8D' },
+            { title: 'Traición', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=15Daqs66jWRTPeDyJcPzCAQxvNtM5khTu' },
+            { title: 'El Distinto', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1KoT_cklMGtk-oAUUl6c8YhaduJhKRj-k' },
+            { title: 'Salvación Perdida', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1xAEI4SisdhVB6__nZF2f_mABI-YI6L38' },
+            { title: 'Peligrosa Tentación', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1Yvnz6SupxGeZCgjMN73a0sHci_cXmfLu' },
+            { title: 'Renacer', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=148UR5Hxl2-y2pyofhrqzX4f25QpCYKM4' },
+            { title: 'Oscuro Presente', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1rZV3Q5M6B25Gwk9OS5wYUO3oJzznlh7H' },
+            { title: 'Medley Metallica (Bonus)', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1shnM6CmxcrWOFOifs0e4orV5Njk2tbW6' }
           ],
           press: [
             { source: 'Agencia de Noticias San Luis', date: '18/08/2017', headline: 'Vade Retro y su hard rock "desenconaron" los parlantes de Terrazas', url: 'https://agenciasanluis.com/2017/08/18/412215-vade-retro-y-su-hard-rock-desenconaron-los-parlantes-de-terrazas/', image_cloudinary: null }
@@ -534,7 +529,7 @@
           ],
           personal_track: {
             title: 'Tantas Noches',
-            drive_url: 'https://drive.google.com/uc?export=download&id=1QA-nZJ04PGMthWui9q4K6NrdWqArAneJ'
+            drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1QA-nZJ04PGMthWui9q4K6NrdWqArAneJ'
           },
           press: [],
           links: {
@@ -559,8 +554,19 @@
         {
           id: 'vox-futura', name: 'Vox Futura', period: '2026–presente', status: 'activo',
           genre: ['Ambient', 'Electrónica'],
-          description: 'Mi proyecto actual. Nació en 2026 y la idea es desarrollarlo junto con los hermanos de Prana. Ya hay 9 canciones listas para grabar.',
+          description: 'Mi proyecto actual. Nació en 2026 y la idea es desarrollarlo junto con los hermanos de Prana. Hay 9 canciones grabadas — acá podés escucharlas.',
           image_cloudinary: 'PLACEHOLDER_vox_futura',
+          songs: [
+            { title: 'Punto de fuga',  drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=162V6jgQdjoVtQRU4FYUmie5E_f70xcmJ' },
+            { title: 'Remanso',        drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=14RBKTmXXf27HtJD1UogzDNg2gBS4ITS9' },
+            { title: 'Tira el reloj', drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1hoZ3V0sqOHvxkRotxnrWtI-hNapuxcTi' },
+            { title: 'Laberinto',      drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1cxHlb-ZGYRzxK1INVQZ7ZwOsbmZaiVHF' },
+            { title: 'Equipaje',       drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1oAq7PYbATAiwUdhf2PA6vfFO6R7hKgWH' },
+            { title: 'Alejándose',     drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=13pZCFu8_aYC9oq-wm_9CDYk73GVOebkS' },
+            { title: 'Otra Vez',       drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1seFxivsGqbMcY2-LlR7iglzLapv_XVly' },
+            { title: 'Punto ciego',    drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1deYKnLq7GB-Ye2O8Nj54FnCVN6o_oPf-' },
+            { title: 'Geometría',      drive_url: 'https://drive.google.com/uc?export=download&confirm=t&id=1V-hpnH05SpBu_4LztrTlNnWGyAD8Dgge' }
+          ],
           press: [],
           links: {}
         }
@@ -579,9 +585,10 @@
           card.classList.toggle('open');
           if (card.classList.contains('open') && !inited) {
             inited = true;
-            if (p.id === 'deja-vu')   initPlayer('deja-vu');
+            if (p.id === 'deja-vu')    initPlayer('deja-vu');
             if (p.id === 'vade-retro') initPlayer('vade-retro');
             if (p.id === 'prana')      initPlayer('prana-personal');
+            if (p.id === 'vox-futura') initPlayer('vox-futura');
           }
         });
       });
