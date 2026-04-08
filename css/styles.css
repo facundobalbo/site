@@ -1860,6 +1860,40 @@ footer a:hover {
   margin-bottom: var(--space-lg);
 }
 
+/* Apuntes compactos en home — versión densa con hover de contraste */
+#home-apuntes-container .apunte-item {
+  padding: 18px var(--space-md);
+  margin: 0 calc(-1 * var(--space-md));
+  border-top: 1px solid var(--border);
+  border-left: 2px solid transparent;
+  cursor: default;
+  transition: background-color 0.15s ease, border-left-color 0.15s ease;
+}
+
+#home-apuntes-container .apunte-item:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+#home-apuntes-container .apunte-item:hover {
+  background-color: rgba(255, 255, 255, 0.025);
+  border-left-color: var(--accent);
+}
+
+#home-apuntes-container .apunte-meta {
+  margin-bottom: 6px;
+}
+
+#home-apuntes-container .apunte-text {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-dim);
+  transition: color 0.15s ease;
+}
+
+#home-apuntes-container .apunte-item:hover .apunte-text {
+  color: var(--text);
+}
+
 /* Paginación de apuntes en home */
 .apuntes-pagination {
   display: flex;
