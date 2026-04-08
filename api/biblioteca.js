@@ -56,19 +56,32 @@ async function getBlocks(pageId) {
 }
 
 async function fetchCover(titulo, autor) {
+  // 1) Open Library
   try {
     const q = encodeURIComponent((titulo + ' ' + (autor || '')).trim());
     const res = await fetch(
       `https://openlibrary.org/search.json?q=${q}&limit=1&fields=cover_i`,
       { headers: { 'User-Agent': 'FacundoBalboSite/1.0' } }
     );
-    if (!res.ok) return null;
-    const data = await res.json();
-    const coverId = data.docs?.[0]?.cover_i;
-    return coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null;
-  } catch {
-    return null;
-  }
+    if (res.ok) {
+      const data = await res.json();
+      const coverId = data.docs?.[0]?.cover_i;
+      if (coverId) return `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
+    }
+  } catch { /* continúa al fallback */ }
+
+  // 2) Google Books como fallback
+  try {
+    const q = encodeURIComponent(`intitle:${titulo}${autor ? ` inauthor:${autor}` : ''}`);
+    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${q}&maxResults=1&fields=items(volumeInfo/imageLinks)`);
+    if (res.ok) {
+      const data = await res.json();
+      const thumb = data.items?.[0]?.volumeInfo?.imageLinks?.thumbnail;
+      if (thumb) return thumb.replace('http://', 'https://').replace('zoom=1', 'zoom=2');
+    }
+  } catch { /* sin portada */ }
+
+  return null;
 }
 
 function blocksToText(blocks) {
