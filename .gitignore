@@ -1,19 +1,7 @@
-# OS
+node_modules/
+.env
+.env.local
+.vercel
 .DS_Store
 Thumbs.db
-
-# Editor
-.vscode/
-*.swp
-
-# Images (hosted on Cloudinary) — excepciones puntuales abajo
-/public/images/**
-!/public/images/galeria/
-!/public/images/galeria/galeria_1.JPG
-
-# Next.js build artifacts
-/.next/
-
-# Temp
-*.tar.gz
-*.tgz
+*.log
