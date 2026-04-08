@@ -6,8 +6,10 @@ Thumbs.db
 .vscode/
 *.swp
 
-# Images (hosted on Cloudinary)
-/public/images/
+# Images (hosted on Cloudinary) — excepciones puntuales abajo
+/public/images/**
+!/public/images/galeria/
+!/public/images/galeria/galeria_1.JPG
 
 # Next.js build artifacts
 /.next/
