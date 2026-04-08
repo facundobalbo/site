@@ -1996,6 +1996,25 @@ footer a:hover {
   max-height: 85vh;
   overflow-y: auto;
   padding: 40px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.essay-modal::-webkit-scrollbar {
+  width: 4px;
+}
+
+.essay-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.essay-modal::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.essay-modal::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
 }
 
 .essay-modal-label {
@@ -2015,9 +2034,11 @@ footer a:hover {
 }
 
 .essay-modal-body p {
-  color: var(--text-muted);
+  color: #b0aea8;
   margin-bottom: 16px;
-  line-height: 1.7;
+  line-height: 1.85;
+  font-size: 15px;
+  letter-spacing: 0.01em;
 }
 
 .essay-figure {
