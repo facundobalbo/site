@@ -64,8 +64,8 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
-    const dbId = process.env.NOTION_ESCRITURA_DB;
-    if (!dbId) throw new Error('NOTION_ESCRITURA_DB no configurado');
+    const dbId = process.env.NOTION_ENTRADAS_DB;
+    if (!dbId) throw new Error('NOTION_ENTRADAS_DB no configurado');
 
     const data = await queryNotion(dbId, {
       filter: {
