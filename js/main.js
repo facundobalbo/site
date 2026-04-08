@@ -18,7 +18,8 @@
     { num: '05', label: 'WRITING',     href: 'escritura.html',     page: 'escritura' },
     { num: '06', label: 'PROJECTS',    href: 'cuantificados.html', page: 'cuantificados', special: true },
     { num: '07', label: 'LIBRARY',     href: 'biblioteca.html',    page: 'biblioteca' },
-    { num: '08', label: 'ABOUT',       href: 'sobre-mi.html',      page: 'sobre-mi' },
+    { num: '08', label: 'APUNTES',     href: 'apuntes.html',       page: 'apuntes' },
+    { num: '09', label: 'ABOUT',       href: 'sobre-mi.html',      page: 'sobre-mi' },
   ];
 
   function buildSidebar() {

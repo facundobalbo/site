@@ -21,7 +21,10 @@
       "Bash(git add:*)",
       "Bash(git rm:*)",
       "Bash(git restore:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(rm -rf \"c:/Users/ferch/OneDrive/Escritorio/Proyectos/site/.next\")",
+      "Bash(rm -f \"c:/Users/ferch/OneDrive/Escritorio/Proyectos/site/PERSONAL_SITE_CLAUDE_CODE_BRIEF2.md\")",
+      "Bash(rm -f \"c:/Users/ferch/OneDrive/Escritorio/Proyectos/site/README.md\")"
     ]
   }
 }
