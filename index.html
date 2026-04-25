@@ -4,11 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Facundo Balbo</title>
-  <meta name="description" content="Ingeniero civil, escritor y músico. La arquitectura de una vida coherente." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪐</text></svg>" />
+  <meta name="description" content="Registro de obra, código, escritura y música. San Luis, Argentina." />
+  <meta property="og:title" content="Facundo Balbo" />
+  <meta property="og:description" content="Registro de obra, código, escritura y música." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.85em' x='15' font-size='90' font-family='Georgia' font-style='italic' fill='%23c8956c'>F</text></svg>" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body data-page="home">
+<body data-page="inicio">
   <div id="sidebar"></div>
 
   <div class="mobile-topbar" id="mobile-topbar"></div>
@@ -16,135 +19,58 @@
   <main class="main-content" id="main-content">
     <div class="content-wrapper">
 
-      <!-- HERO -->
-      <section class="hero hero--no-photo">
-        <div class="hero-left">
-          <span class="eyebrow hero-eyebrow">BIENVENIDO!</span>
-          <h1 class="hero-title">Soy Facu.</h1>
-          <p class="hero-body">Estudiante y co-fundador de Metcon SAS. Dirijo obras junto con mi hermano y en paralelo escribo, programo herramientas que uso yo mismo y hago música.</p>
-          <p class="hero-body">Esta página existe para tener un lugar donde simplemente juntar todo eso.</p>
-        </div>
-      </section>
-
-      <hr class="divider" />
-
-      <!-- APUNTES — últimas entradas con paginación -->
-      <section>
-        <p class="eyebrow" style="margin-bottom: 24px; display: block;">MI TWITTER PERSONAL 😛</p>
+      <!-- REGISTRO — feed de apuntes -->
+      <section class="home-section home-section--first">
+        <p class="eyebrow home-eyebrow">REGISTRO</p>
         <div class="apuntes-list" id="home-apuntes-container">
-          <p class="apuntes-loading">Cargando...</p>
+          <p class="apuntes-loading">Cargando…</p>
         </div>
         <div class="apuntes-pagination" id="home-apuntes-pagination" style="display:none;"></div>
       </section>
 
       <hr class="divider" />
 
-      <!-- MIS INTERESES -->
-      <section>
-        <p class="eyebrow" style="margin-bottom: 24px; display: block;">MIS INTERESES</p>
-        <div class="identity-cards">
-          <div class="identity-card">
-            <span class="identity-card-tag">INGENIERÍA Y PROGRAMACIÓN</span>
-            <h3 class="identity-card-title">Construyendo cosas</h3>
-            <p class="identity-card-body">Trabajo en obra desde el lado técnico y operativo. Aprendí que gestionar gente, máquinas y plazos es tan exigente como cualquier cálculo — y que nadie te lo enseña en la facultad. Además programo herramientas y páginas por hobby, utilidad y curiosidad.</p>
-          </div>
-          <div class="identity-card">
-            <span class="identity-card-tag">ESCRITURA</span>
-            <h3 class="identity-card-title">Escribiendo cosas</h3>
-            <p class="identity-card-body">Tengo un ensayo en progreso llamado Cuantificados — sobre cómo las métricas colonizaron la forma en que nos entendemos a nosotros mismos. La modernidad mide todo. Yo intento entender por qué eso nos cambia. Todavía no sé si es un libro o una terapia.</p>
-          </div>
-          <div class="identity-card">
-            <span class="identity-card-tag">MÚSICA</span>
-            <h3 class="identity-card-title">Componiendo cosas</h3>
-            <p class="identity-card-body">Me considero baterista y productor por necesidad. Junto con amigos compartí en total 3 bandas de las cuales disfruté de igual manera que aprendí.</p>
-          </div>
+      <!-- EN PROCESO — 3 cards activas -->
+      <section class="home-section">
+        <p class="eyebrow home-eyebrow">EN PROCESO</p>
+        <div class="process-grid">
+
+          <a href="trabajo.html" class="process-card">
+            <span class="process-card-tag">OBRA</span>
+            <h3 class="process-card-title">Cierre Perimetral — Parque Industrial Norte</h3>
+            <p class="process-card-meta">Enero — Agosto 2026 · San Luis</p>
+          </a>
+
+          <a href="cuantificados.html" class="process-card">
+            <span class="process-card-tag">ESCRITURA</span>
+            <h3 class="process-card-title">Cuantificados</h3>
+            <p class="process-card-meta">Ensayo en progreso · ~42.000 palabras</p>
+          </a>
+
+          <a href="musica.html" class="process-card">
+            <span class="process-card-tag">MÚSICA</span>
+            <h3 class="process-card-title">Vox Futura</h3>
+            <p class="process-card-meta">Primer EP en producción</p>
+          </a>
+
         </div>
       </section>
 
-      <!-- QUOTE BLOCK -->
-      <blockquote class="quote-block">
-        <p class="quote-block-text">"¿Estoy invirtiendo mi energía en cosas coherentes con lo que quiero ser?"</p>
-        <cite class="quote-block-attr">— UNA REFLEXIÓN EN LA QUE PIENSO SEGUIDO</cite>
-      </blockquote>
+      <hr class="divider" />
+
+      <!-- IDENTIFICACIÓN MÍNIMA — al pie, sin pose -->
+      <section class="home-section home-section--last">
+        <p class="home-foot">San Luis, Argentina. Construyo edificios. De a ratos también software, escritura y música. Esta página es donde lo voy juntando.</p>
+      </section>
 
     </div>
 
     <footer>
-      <span>© 2026 Facundo Balbo — CONSTRUIDO PARA PERDURAR</span>
+      <span>© 2026 — Facundo Balbo</span>
+      <span class="footer-meta" id="footer-status"></span>
     </footer>
   </main>
 
   <script src="js/main.js"></script>
-  <script>
-    (function () {
-      var PER_PAGE = 10;
-      var currentPage = 0;
-      var allApuntes = [];
-
-      function renderApunte(apunte) {
-        var badge = apunte.etiqueta
-          ? '<span class="apunte-badge">' + apunte.etiqueta + '</span>'
-          : '';
-        var parrafos = (apunte.contenido || '')
-          .split('\n\n')
-          .filter(Boolean)
-          .map(function (p) { return '<p>' + p.replace(/\n/g, '<br>') + '</p>'; })
-          .join('');
-        return '<article class="apunte-item">'
-          + '<div class="apunte-meta">'
-          + '<span class="apunte-date">' + (apunte.fecha || '') + '</span>'
-          + badge
-          + '</div>'
-          + '<div class="apunte-text">' + parrafos + '</div>'
-          + '</article>';
-      }
-
-      function renderPage(page) {
-        var start = page * PER_PAGE;
-        var slice = allApuntes.slice(start, start + PER_PAGE);
-        var container = document.getElementById('home-apuntes-container');
-        container.innerHTML = slice.map(renderApunte).join('');
-
-        var totalPages = Math.ceil(allApuntes.length / PER_PAGE);
-        var pagination = document.getElementById('home-apuntes-pagination');
-
-        if (totalPages <= 1) {
-          pagination.style.display = 'none';
-          return;
-        }
-
-        pagination.style.display = 'flex';
-        pagination.innerHTML =
-          '<button class="apuntes-page-btn" id="apuntes-prev"'
-          + (page === 0 ? ' disabled' : '') + '>← ANTERIORES</button>'
-          + '<span class="apuntes-page-info">PÁGINA ' + (page + 1) + ' DE ' + totalPages + '</span>'
-          + '<button class="apuntes-page-btn" id="apuntes-next"'
-          + (page >= totalPages - 1 ? ' disabled' : '') + '>SIGUIENTES →</button>';
-
-        document.getElementById('apuntes-prev').addEventListener('click', function () {
-          if (currentPage > 0) { currentPage--; renderPage(currentPage); }
-        });
-        document.getElementById('apuntes-next').addEventListener('click', function () {
-          if (currentPage < totalPages - 1) { currentPage++; renderPage(currentPage); }
-        });
-      }
-
-      fetch('/api/apuntes')
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-          var container = document.getElementById('home-apuntes-container');
-          if (data.error || !data.apuntes || data.apuntes.length === 0) {
-            container.innerHTML = '<p class="apuntes-empty">Sin apuntes por el momento.</p>';
-            return;
-          }
-          allApuntes = data.apuntes;
-          renderPage(0);
-        })
-        .catch(function () {
-          document.getElementById('home-apuntes-container').innerHTML =
-            '<p class="apuntes-error">No se pudieron cargar los apuntes.</p>';
-        });
-    })();
-  </script>
 </body>
 </html>
